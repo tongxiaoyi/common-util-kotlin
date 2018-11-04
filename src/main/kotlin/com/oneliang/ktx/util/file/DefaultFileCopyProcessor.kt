@@ -1,0 +1,47 @@
+package com.oneliang.ktx.util.file
+
+import com.oneliang.ktx.Constants
+import com.oneliang.ktx.util.file.FileUtil.FileCopyProcessor
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
+
+class DefaultFileCopyProcessor : FileCopyProcessor {
+    /**
+     * copyFileToFileProcess
+     * @param from,maybe directory
+     * @param to,maybe directory
+     * @param isFile,maybe directory or file
+     * @return boolean,if true keep going copy,only active in directory so far
+     */
+    override fun copyFileToFileProcess(from: String, to: String, isFile: Boolean): Boolean {
+        try {
+//            if (isFile) {
+//                val fromFile = File(from).getAbsolutePath()
+//                val toFile = File(to).getAbsolutePath()
+//                if (fromFile.equals(toFile)) {
+//                    toFile = toFile + "_copy"
+//                }
+//                FileUtil.createFile(toFile)
+//                val inputStream = FileInputStream(fromFile)
+//                val outputStream = FileOutputStream(toFile)
+//                try {
+//                    val buffer = ByteArray(Constants.Capacity.BYTES_PER_KB)
+//                    val length = -1
+//                    while ((length = inputStream.read(buffer, 0, buffer.size)) != -1) {
+//                        outputStream.write(buffer, 0, length)
+//                        outputStream.flush()
+//                    }
+//                } finally {
+//                    inputStream.close()
+//                    outputStream.close()
+//                }
+//            } else {
+//                FileUtil.createDirectory(to)
+//            }
+        } catch (e: Exception) {
+            throw FileCopyException(e)
+        }
+        return true
+    }
+}
