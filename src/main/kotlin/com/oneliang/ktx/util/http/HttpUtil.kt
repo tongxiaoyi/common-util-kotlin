@@ -405,7 +405,7 @@ object HttpUtil {
                 outputStream.close()
             }
             val responseCode = httpUrlConnection.getResponseCode()
-            val headerFieldMap = httpUrlConnection.getHeaderFields()
+            val headerFieldMap = httpUrlConnection.getHeaderFields() ?: emptyMap()
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 if (callback != null) {
                     val contentLength = httpUrlConnection.getContentLength()
