@@ -1,8 +1,7 @@
 apply plugin:'java'
-apply plugin:'eclipse'
 apply plugin:'maven-publish'
 
-group = 'com.oneliang'
+group = 'com.oneliang.ktx'
 version = '1.0'
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
