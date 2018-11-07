@@ -152,7 +152,7 @@ object HttpUtil {
         var result: String = Constants.String.BLANK
         if (tempByteArray.size > 0) {
             try {
-                result = String(tempByteArray, Charset.forName(Constants.Encoding.UTF8))
+                result = String(tempByteArray, Charsets.UTF_8)
             } catch (e: UnsupportedEncodingException) {
                 logger.error(Constants.Base.EXCEPTION, e)
             }
@@ -393,7 +393,7 @@ object HttpUtil {
             httpUrlConnection.connect()
             if (method.isNotBlank() && method.equals(Constants.Http.RequestMethod.POST, ignoreCase = true)) {
                 val outputStream = httpUrlConnection.getOutputStream()
-                outputStream.write(content.toString().toByteArray(Charset.forName(Constants.Encoding.UTF8)))
+                outputStream.write(content.toString().toByteArray(Charsets.UTF_8))
                 if (streamByteArray.size > 0) {
                     outputStream.write(streamByteArray)
                     outputStream.flush()
