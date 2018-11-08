@@ -16,7 +16,7 @@ import java.nio.charset.Charset
 object HttpUtil {
 
     private val logger = LoggerManager.getLogger(HttpUtil::class.java)
-    const val DEFAULT_TIMEOUT = 20000;
+    const val DEFAULT_TIMEOUT = 20000
 
     /**
      * send request by get method

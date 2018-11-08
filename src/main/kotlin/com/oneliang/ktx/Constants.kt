@@ -1,7 +1,5 @@
 package com.oneliang.ktx
 
-import java.util.Date
-
 object Constants {
     object Base {
         const val EXCEPTION = "exception"
@@ -9,30 +7,30 @@ object Constants {
 
     object Time {
         const val MILLSECONDS_OF_SECOND = 1000L
-        const val MILLSECONDS_OF_MINUTE = 60 * MILLSECONDS_OF_SECOND;
-        const val MILLSECONDS_OF_HOUR = 60 * MILLSECONDS_OF_MINUTE;
-        const val MILLSECONDS_OF_DAY = 24 * MILLSECONDS_OF_HOUR;
-        const val SECOND_OF_MINUTE = 60L;
-        const val MINUTE_OF_HOUR = 60L;
-        const val SECONDS_OF_HOUR = SECOND_OF_MINUTE * MINUTE_OF_HOUR;
-        const val SECONDS_OF_DAY = SECONDS_OF_HOUR * 24;
+        const val MILLSECONDS_OF_MINUTE = 60 * MILLSECONDS_OF_SECOND
+        const val MILLSECONDS_OF_HOUR = 60 * MILLSECONDS_OF_MINUTE
+        const val MILLSECONDS_OF_DAY = 24 * MILLSECONDS_OF_HOUR
+        const val SECOND_OF_MINUTE = 60L
+        const val MINUTE_OF_HOUR = 60L
+        const val SECONDS_OF_HOUR = SECOND_OF_MINUTE * MINUTE_OF_HOUR
+        const val SECONDS_OF_DAY = SECONDS_OF_HOUR * 24
 
-        const val YEAR_MONTH = "yyyy-MM";// year month
-        const val YEAR_MONTH_DAY = "yyyy-MM-dd";// year-month-day
-        const val YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss";//always used for database
-        const val YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND = "yyyy-MM-dd HH:mm:ss,SSS";//always used for log
+        const val YEAR_MONTH = "yyyy-MM"// year month
+        const val YEAR_MONTH_DAY = "yyyy-MM-dd"// year-month-day
+        const val YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss"//always used for database
+        const val YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND = "yyyy-MM-dd HH:mm:ss,SSS"//always used for log
         const val DEFAULT_DATE_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy"
     }
 
     object String {
         const val BLANK = ""
         const val SPACE = " "
-        const val CRLF_STRING = "\r\n";
-        const val CR_STRING = "\r";
-        const val LF_STRING = "\n";
-        const val CR = '\r'.toByte();
-        const val LF = '\n'.toByte();
-        val CRLF: ByteArray = ByteArray(2, { index ->
+        const val CRLF_STRING = "\r\n"
+        const val CR_STRING = "\r"
+        const val LF_STRING = "\n"
+        const val CR = '\r'.toByte()
+        const val LF = '\n'.toByte()
+        val CRLF: ByteArray = ByteArray(2) { index ->
             when (index) {
                 0 -> {
                     CR
@@ -44,7 +42,7 @@ object Constants {
                     0.toByte()
                 }
             }
-        })
+        }
     }
 
     object Symbol {

@@ -2,8 +2,7 @@ package com.oneliang.ktx.util.common
 
 import com.oneliang.ktx.Constants
 import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
+import java.util.*
 
 fun String.toIntSafely(defaultValue: Int = 0): Int {
     return try {
@@ -40,7 +39,7 @@ private const val METCH_PATTERN_REPLACEMENT = "[\\\\S|\\\\s]*"
 
 fun CharSequence.matchPattern(pattern: String): Boolean {
     if (pattern.indexOf(METCH_PATTERN) >= 0) {
-        val matchPattern = Constants.Symbol.XOR + pattern.replace(METCH_PATTERN_REGEX, METCH_PATTERN_REPLACEMENT) + Constants.Symbol.DOLLAR;
+        val matchPattern = Constants.Symbol.XOR + pattern.replace(METCH_PATTERN_REGEX, METCH_PATTERN_REPLACEMENT) + Constants.Symbol.DOLLAR
         return this.matches(matchPattern.toRegex())
     } else {
         if (this == pattern) {
