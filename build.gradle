@@ -12,22 +12,22 @@ buildscript {
         kotlin_version = '1.3.0'
     }
     repositories {
-//        mavenLocal()
-        maven {
-            url "http://maven.oa.com/nexus/content/repositories/android"
-        }
-        maven {
-            url "http://maven.oa.com/nexus/content/repositories/thirdparty"
-        }
-        maven {
-            url "http://maven.oa.com/nexus/content/repositories/thirdparty-snapshots"
-        }
-        maven {
-            url "http://maven.oa.com/nexus/content/repositories/jcenter"
-        }
-        maven {
-            url "http://maven.oa.com/nexus/content/repositories/google-maven/"
-        }
+        mavenLocal()
+//        maven {
+//            url "http://maven.oa.com/nexus/content/repositories/android"
+//        }
+//        maven {
+//            url "http://maven.oa.com/nexus/content/repositories/thirdparty"
+//        }
+//        maven {
+//            url "http://maven.oa.com/nexus/content/repositories/thirdparty-snapshots"
+//        }
+//        maven {
+//            url "http://maven.oa.com/nexus/content/repositories/jcenter"
+//        }
+//        maven {
+//            url "http://maven.oa.com/nexus/content/repositories/google-maven/"
+//        }
         google()
         jcenter()
     }
