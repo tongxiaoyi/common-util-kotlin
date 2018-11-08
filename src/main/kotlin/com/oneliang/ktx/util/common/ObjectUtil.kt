@@ -30,7 +30,7 @@ object ObjectUtil {
     @JvmOverloads
     fun fieldNameToMethodName(methodPrefix: String, fieldName: String, ignoreFirstLetterCase: Boolean = false): String {
         val methodName: String
-        if (fieldName.length > 0) {
+        if (fieldName.isNotEmpty()) {
             if (ignoreFirstLetterCase) {
                 methodName = methodPrefix + fieldName
             } else {
@@ -128,8 +128,8 @@ object ObjectUtil {
                 }
             }
             if (isAllInterface) {
-                val interfaces = currentClass.getInterfaces()
-                if (interfaces != null && interfaces.size > 0) {
+                val interfaces = currentClass.interfaces
+                if (interfaces != null && interfaces.isNotEmpty()) {
                     for (interfaceClass in interfaces) {
                         queue.add(interfaceClass)
                         if (!list.contains(interfaceClass)) {
@@ -211,11 +211,11 @@ object ObjectUtil {
         var methodName = ObjectUtil.fieldNameToMethodName(Constants.Method.PREFIX_GET, fieldName, ignoreFirstLetterCase)
         var method: Method
         try {
-            method = objectValue.javaClass.getMethod(methodName, *arrayOf())
+            method = objectValue.javaClass.getMethod(methodName)
         } catch (e: Exception) {
             methodName = ObjectUtil.fieldNameToMethodName(Constants.Method.PREFIX_IS, fieldName, ignoreFirstLetterCase)
             try {
-                method = objectValue.javaClass.getMethod(methodName, *arrayOf())
+                method = objectValue.javaClass.getMethod(methodName)
             } catch (ex: Exception) {
                 throw ObjectUtilException("No getter or is method for field:$fieldName", ex)
             }
@@ -283,7 +283,8 @@ object ObjectUtil {
         }
     }
 
-    /**
+
+     /**
      * new instance
      *
      * @param clazz
@@ -291,6 +292,7 @@ object ObjectUtil {
      * @param parameterValues
      * @return T
      */
+     @Suppress("UNCHECKED_CAST")
     fun <T : Any> newInstance(clazz: Class<*>, parameterTypes: Array<Class<*>>, parameterValues: Array<Any>): T {
         val value: T
         try {
@@ -336,8 +338,9 @@ object ObjectUtil {
      * @param parameterValues
      * @return T
      */
+    @Suppress("UNCHECKED_CAST")
     private fun <T : Any> methodInvoke(clazz: Class<*>, objectValue: Any?, methodName: String, parameterTypes: Array<Class<*>>, parameterValues: Array<Any>): T? {
-        var value: T?
+        val value: T?
         try {
             value = clazz.getMethod(methodName, *parameterTypes).invoke(objectValue, *parameterValues) as T
         } catch (e: Exception) {
