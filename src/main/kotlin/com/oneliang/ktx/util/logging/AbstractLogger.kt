@@ -52,7 +52,7 @@ abstract class AbstractLogger(private val level: Level) : Logger {
      * @param message
      */
     override fun error(message: Any) {
-        this.error(message)
+        logByLevel(Level.ERROR, message, null)
     }
 
     /**

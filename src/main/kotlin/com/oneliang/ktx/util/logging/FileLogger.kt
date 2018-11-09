@@ -1,19 +1,16 @@
 package com.oneliang.ktx.util.logging
 
 import com.oneliang.ktx.Constants
+import com.oneliang.ktx.util.file.FileUtil
 import com.oneliang.ktx.util.logging.Logger.Level
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.PrintStream
+import java.io.*
 
 class FileLogger(level: Level, outputFile: File) : BaseLogger(level) {
     private var fileOutputStream: FileOutputStream? = null
 
     init {
         try {
-//            FileUtil.createFile(outputFile.getAbsolutePath())
+            FileUtil.createFile(outputFile.absolutePath)
             this.fileOutputStream = FileOutputStream(outputFile, true)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
