@@ -206,23 +206,23 @@ object ObjectUtil {
      * @return Object
      */
     @JvmOverloads
-    fun getterOrIsMethodInvoke(objectValue: Any, fieldName: String, ignoreFirstLetterCase: Boolean = false): Any {
+    fun getterOrIsMethodInvoke(instance: Any, fieldName: String, ignoreFirstLetterCase: Boolean = false): Any {
         val value: Any
         var methodName = ObjectUtil.fieldNameToMethodName(Constants.Method.PREFIX_GET, fieldName, ignoreFirstLetterCase)
         var method: Method
         try {
-            method = objectValue.javaClass.getMethod(methodName)
+            method = instance.javaClass.getMethod(methodName)
         } catch (e: Exception) {
             methodName = ObjectUtil.fieldNameToMethodName(Constants.Method.PREFIX_IS, fieldName, ignoreFirstLetterCase)
             try {
-                method = objectValue.javaClass.getMethod(methodName)
+                method = instance.javaClass.getMethod(methodName)
             } catch (ex: Exception) {
                 throw ObjectUtilException("No getter or is method for field:$fieldName", ex)
             }
         }
 
         try {
-            value = method.invoke(objectValue, arrayOf<Any>())
+            value = method.invoke(instance, arrayOf<Any>())
         } catch (e: Exception) {
             throw ObjectUtilException(e)
         }
@@ -284,7 +284,7 @@ object ObjectUtil {
     }
 
 
-     /**
+    /**
      * new instance
      *
      * @param clazz
@@ -292,7 +292,7 @@ object ObjectUtil {
      * @param parameterValues
      * @return T
      */
-     @Suppress("UNCHECKED_CAST")
+    @Suppress("UNCHECKED_CAST")
     fun <T : Any> newInstance(clazz: Class<*>, parameterTypes: Array<Class<*>>, parameterValues: Array<Any>): T {
         val value: T
         try {
@@ -313,8 +313,8 @@ object ObjectUtil {
      * @param parameterValues
      * @return T
      */
-    fun <T : Any> methodInvoke(objectValue: Any, methodName: String, parameterTypes: Array<Class<*>>, parameterValues: Array<Any>): T? {
-        return methodInvoke(objectValue.javaClass, objectValue, methodName, parameterTypes, parameterValues)
+    fun <T : Any> methodInvoke(instance: Any, methodName: String, parameterTypes: Array<Class<*>>, parameterValues: Array<Any>): T? {
+        return methodInvoke(instance.javaClass, instance, methodName, parameterTypes, parameterValues)
     }
 
     /**
@@ -339,10 +339,10 @@ object ObjectUtil {
      * @return T
      */
     @Suppress("UNCHECKED_CAST")
-    private fun <T : Any> methodInvoke(clazz: Class<*>, objectValue: Any?, methodName: String, parameterTypes: Array<Class<*>>, parameterValues: Array<Any>): T? {
+    private fun <T : Any> methodInvoke(clazz: Class<*>, instance: Any?, methodName: String, parameterTypes: Array<Class<*>>, parameterValues: Array<Any>): T? {
         val value: T?
         try {
-            value = clazz.getMethod(methodName, *parameterTypes).invoke(objectValue, *parameterValues) as T
+            value = clazz.getMethod(methodName, *parameterTypes).invoke(instance, *parameterValues) as T
         } catch (e: Exception) {
             throw ObjectUtilException(e)
         }

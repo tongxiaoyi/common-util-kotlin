@@ -13,21 +13,6 @@ buildscript {
     }
     repositories {
         mavenLocal()
-//        maven {
-//            url "http://maven.oa.com/nexus/content/repositories/android"
-//        }
-//        maven {
-//            url "http://maven.oa.com/nexus/content/repositories/thirdparty"
-//        }
-//        maven {
-//            url "http://maven.oa.com/nexus/content/repositories/thirdparty-snapshots"
-//        }
-//        maven {
-//            url "http://maven.oa.com/nexus/content/repositories/jcenter"
-//        }
-//        maven {
-//            url "http://maven.oa.com/nexus/content/repositories/google-maven/"
-//        }
         google()
         jcenter()
     }
@@ -56,10 +41,8 @@ sourceSets {
 
 repositories {
     mavenLocal()
-    maven {
-        url 'http://repo1.maven.org/maven2'
-    }
-    mavenCentral()
+    google()
+    jcenter()
 }
 
 dependencies {

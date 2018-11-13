@@ -28,6 +28,8 @@ fun String.toBooleanSafely(defaultValue: Boolean = false): Boolean {
     }
 }
 
+fun String.hexStringToByteArray() = ByteArray(this.length / 2) { this.substring(it * 2, it * 2 + 2).toInt(16).toByte() }
+
 fun String.toUtilDate(format: String = Constants.Time.YEAR_MONTH_DAY_HOUR_MINUTE_SECOND, locale: Locale = Locale.getDefault()): Date {
     val simpleDateFormat = SimpleDateFormat(format, locale)
     return simpleDateFormat.parse(this)
