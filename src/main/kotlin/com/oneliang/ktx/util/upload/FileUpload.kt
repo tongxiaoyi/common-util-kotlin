@@ -3,7 +3,6 @@ package com.oneliang.ktx.util.upload
 import com.oneliang.ktx.Constants
 import com.oneliang.ktx.util.logging.LoggerManager
 import java.io.*
-import java.util.*
 
 /**
  * for any file upload
@@ -34,8 +33,9 @@ class FileUpload {
      * @return FileUploadSign
      * @throws IOException
      */
-    fun upload(inputStream: InputStream, filename: String): FileUploadResult? {
-        var fileUploadResult: FileUploadResult? = null
+    fun upload(inputStream: InputStream, filename: String): FileUploadResult {
+        val fileUploadResult = FileUploadResult()
+        fileUploadResult.filename = filename
         var outputStream: OutputStream? = null
         try {
             outputStream = FileOutputStream(saveFilePath + Constants.Symbol.SLASH_LEFT + filename)
@@ -46,10 +46,8 @@ class FileUpload {
                 outputStream.flush()
                 length = inputStream.read(buffer, 0, buffer.size)
             }
-            fileUploadResult = FileUploadResult()
             fileUploadResult.isSuccess = true
             fileUploadResult.filePath = saveFilePath
-            fileUploadResult.filename = filename
             logger.debug("Upload end,original save file is:$filename")
         } catch (e: Exception) {
             logger.error("upload error", e)
@@ -71,8 +69,8 @@ class FileUpload {
      * @return List<FileUploadSign>
      * @throws IOException
     </FileUploadSign> */
-    fun upload(inputStream: InputStream, totalLength: Int, saveFilenames: Array<String>?): List<FileUploadResult> {
-        val fileUploadResultList = ArrayList<FileUploadResult>()
+    fun upload(inputStream: InputStream, totalLength: Int, saveFilenames: Array<String> = emptyArray()): List<FileUploadResult> {
+        val fileUploadResultList = mutableListOf<FileUploadResult>()
         var outputStream: OutputStream? = null
         try {
             var firstLine = true
@@ -121,7 +119,7 @@ class FileUpload {
                             //end one form field
                             if (!formField) {
                                 var saveFilename = originalFilename
-                                if (saveFilenames != null && saveFilenames.size > fileCount) {
+                                if (saveFilenames.size > fileCount) {
                                     val tempFilename = saveFilenames[fileCount]
                                     saveFilename = tempFilename + originalFilename!!.substring(originalFilename.lastIndexOf(Constants.Symbol.DOT), originalFilename.length)
                                 }
@@ -150,7 +148,7 @@ class FileUpload {
                                             temp = inputStream.read()
                                         }
                                         if (temp.toByte() == Constants.String.LF) {
-                                            var length = 0
+                                            var length: Int
                                             if (mayBeEndSign) {
                                                 val available = byteArrayInputStream!!.available()
                                                 System.arraycopy(tempArray, tempArray.size - available, byteArray, 0, available)
