@@ -1,15 +1,15 @@
 package com.oneliang.ktx.util.logging
 
-import kotlin.collections.Map.Entry
+import com.oneliang.ktx.util.common.matchPattern
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.ConcurrentSkipListSet
-import com.oneliang.ktx.util.common.matchPattern
+import kotlin.reflect.KClass
 
 /**
  * @author oneliang
  */
 object LoggerManager {
-    private val loggerMap = ConcurrentHashMap<Class<*>, Logger>()
+    private val loggerMap = ConcurrentHashMap<KClass<*>, Logger>()
     private val patternLoggerMap = ConcurrentHashMap<String, Logger>()
     private val loggerPatternSet = ConcurrentSkipListSet<String>()
     /**
@@ -18,10 +18,10 @@ object LoggerManager {
      * @param clazz
      * @return Logger
      */
-    fun getLogger(clazz: Class<*>): Logger {
-        var logger = loggerMap.get(clazz)
+    fun getLogger(clazz: KClass<*>): Logger {
+        var logger = loggerMap[clazz]
         if (logger == null) {
-            val className = clazz.getName()
+            val className = clazz.java.name
             for (patternKey in loggerPatternSet) {
                 if (className.matchPattern(patternKey)) {
                     logger = patternLoggerMap.get(patternKey)
@@ -38,8 +38,8 @@ object LoggerManager {
      * @param clazz
      * @param logger
      */
-    fun registerLogger(clazz: Class<*>, logger: Logger) {
-        loggerMap.put(clazz, logger)
+    fun registerLogger(clazz: KClass<*>, logger: Logger) {
+        loggerMap[clazz] = logger
     }
 
     /**
@@ -58,7 +58,7 @@ object LoggerManager {
      *
      * @param clazz
      */
-    fun unregisterLogger(clazz: Class<*>) {
+    fun unregisterLogger(clazz: KClass<*>) {
         loggerMap.remove(clazz)
     }
 

@@ -6,16 +6,12 @@ import java.io.ByteArrayOutputStream
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.UnsupportedEncodingException
-import java.net.HttpURLConnection
-import java.net.InetSocketAddress
-import java.net.Proxy
-import java.net.URL
-import java.net.URLEncoder
+import java.net.*
 import java.nio.charset.Charset
 
 object HttpUtil {
 
-    private val logger = LoggerManager.getLogger(HttpUtil::class.java)
+    private val logger = LoggerManager.getLogger(HttpUtil::class)
     const val DEFAULT_TIMEOUT = 20000
 
     /**

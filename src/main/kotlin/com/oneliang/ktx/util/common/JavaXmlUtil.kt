@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
 
 object JavaXmlUtil {
 
-    private val DEFAULT_CLASS_PROCESSOR = KClassUtil.DEFAULT_CLASS_PROCESSOR
+    private val DEFAULT_CLASS_PROCESSOR = KotlinClassUtil.DEFAULT_KOTLIN_CLASS_PROCESSOR
 
     /**
      * get document builder
@@ -123,7 +123,7 @@ object JavaXmlUtil {
      * @param classProcessor
      */
     @Throws(Exception::class)
-    fun initializeFromAttributeMap(objectValue: Any, namedNodeMap: NamedNodeMap, classProcessor: KClassUtil.KClassProcessor = DEFAULT_CLASS_PROCESSOR) {
+    fun initializeFromAttributeMap(objectValue: Any, namedNodeMap: NamedNodeMap, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_CLASS_PROCESSOR) {
         val methods = objectValue.javaClass.methods
         for (method in methods) {
             val methodName = method.name
@@ -139,7 +139,7 @@ object JavaXmlUtil {
                     if (classes.size == 1) {
                         val objectClass = classes[0].kotlin
                         val attributeValue = node.nodeValue
-                        val value = KClassUtil.changeType(objectClass, arrayOf(attributeValue), classProcessor = classProcessor)
+                        val value = KotlinClassUtil.changeType(objectClass, arrayOf(attributeValue), classProcessor = classProcessor)
                         try {
                             method.invoke(objectValue, value)
                         } catch (e: Exception) {
@@ -208,7 +208,7 @@ object JavaXmlUtil {
                     val node = nodeList.item(0)
                     val xmlTagValue = node.textContent.trim()
                     if (classes.size == 1) {
-                        val value = KClassUtil.changeType(classes[0].kotlin, arrayOf<String>(xmlTagValue), classProcessor = DEFAULT_CLASS_PROCESSOR)
+                        val value = KotlinClassUtil.changeType(classes[0].kotlin, arrayOf<String>(xmlTagValue), classProcessor = DEFAULT_CLASS_PROCESSOR)
                         method.invoke(objectValue, value)
                     }
                 }

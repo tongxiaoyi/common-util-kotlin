@@ -2,12 +2,12 @@ package com.oneliang.ktx.util.concurrent
 
 import com.oneliang.ktx.Constants
 import com.oneliang.ktx.util.logging.LoggerManager
-import java.util.Queue
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class ThreadPool : Runnable {
     companion object {
-        private val logger = LoggerManager.getLogger(ThreadPool::class.java)
+        private val logger = LoggerManager.getLogger(ThreadPool::class)
     }
     /**
      * @return the minThreads
@@ -168,7 +168,7 @@ class ThreadPool : Runnable {
 
     private class InnerThread internal constructor(private val threadPool: ThreadPool) : Runnable {
         companion object {
-            private val logger = LoggerManager.getLogger(InnerThread::class.java)
+            private val logger = LoggerManager.getLogger(InnerThread::class)
         }
 
         private var beginTimeMillis: Long = 0
@@ -289,7 +289,7 @@ class ThreadPool : Runnable {
     private class DaemonThread : Runnable {
 
         companion object {
-            private val logger = LoggerManager.getLogger(DaemonThread::class.java)
+            private val logger = LoggerManager.getLogger(DaemonThread::class)
             private val THREAD_WAIT_TIME: Long = 5000
         }
 

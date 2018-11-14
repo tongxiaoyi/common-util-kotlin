@@ -4,7 +4,7 @@ import com.oneliang.ktx.Constants
 import java.util.*
 import kotlin.reflect.KClass
 
-object KClassUtil {
+object KotlinClassUtil {
 
     private val classTypeMap = mutableMapOf<KClass<*>, KClassType>()
 
@@ -15,7 +15,7 @@ object KClassUtil {
     private val baseClassNameMap = mutableMapOf<String, KClass<*>>()
     private val simpleClassNameMap = mutableMapOf<String, KClass<*>>()
 
-    val DEFAULT_CLASS_PROCESSOR: KClassProcessor = DefaultKClassProcessor()
+    val DEFAULT_KOTLIN_CLASS_PROCESSOR: KotlinClassProcessor = DefaultKotlinClassProcessor()
 
     enum class KClassType {
         KOTLIN_STRING, KOTLIN_CHARACTER, KOTLIN_SHORT, KOTLIN_INTEGER, KOTLIN_LONG,
@@ -187,11 +187,11 @@ object KClassUtil {
      * @param classProcessor
      * @return Object
     </T> */
-    fun <T : Any> changeType(clazz: KClass<T>, values: Array<String>, fieldName: String = Constants.String.BLANK, classProcessor: KClassProcessor = DEFAULT_CLASS_PROCESSOR): T? {
+    fun <T : Any> changeType(clazz: KClass<T>, values: Array<String>, fieldName: String = Constants.String.BLANK, classProcessor: KotlinClassProcessor = DEFAULT_KOTLIN_CLASS_PROCESSOR): T? {
         return classProcessor.changeClassProcess(clazz, values, fieldName)
     }
 
-    interface KClassProcessor {
+    interface KotlinClassProcessor {
 
         /**
          * change class process
@@ -200,6 +200,6 @@ object KClassUtil {
          * @param fieldName is null if not exist
          * @return Object
          */
-        fun <T : Any> changeClassProcess(clazz: KClass<*>, values: Array<String>, fieldName: String): T?
+        fun <T : Any> changeClassProcess(clazz: KClass<T>, values: Array<String>, fieldName: String): T?
     }
 }

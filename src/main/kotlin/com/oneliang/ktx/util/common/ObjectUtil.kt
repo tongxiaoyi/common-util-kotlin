@@ -17,7 +17,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
  */
 object ObjectUtil {
 
-    private val logger = LoggerManager.getLogger(ObjectUtil::class.java)
+    private val logger = LoggerManager.getLogger(ObjectUtil::class)
 
     /**
      * field name to method name
@@ -29,17 +29,15 @@ object ObjectUtil {
      */
     @JvmOverloads
     fun fieldNameToMethodName(methodPrefix: String, fieldName: String, ignoreFirstLetterCase: Boolean = false): String {
-        val methodName: String
-        if (fieldName.isNotEmpty()) {
+        return if (fieldName.isNotEmpty()) {
             if (ignoreFirstLetterCase) {
-                methodName = methodPrefix + fieldName
+                methodPrefix + fieldName
             } else {
-                methodName = methodPrefix + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1)
+                methodPrefix + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1)
             }
         } else {
-            methodName = methodPrefix
+            methodPrefix
         }
-        return methodName
     }
 
     /**
@@ -52,18 +50,16 @@ object ObjectUtil {
      */
     @JvmOverloads
     fun methodNameToFieldName(methodPrefix: String, methodName: String, ignoreFirstLetterCase: Boolean = false): String {
-        val fieldName: String
-        if (methodName.length > methodPrefix.length) {
+        return if (methodName.length > methodPrefix.length) {
             val front = methodPrefix.length
             if (ignoreFirstLetterCase) {
-                fieldName = methodName.substring(front, front + 1) + methodName.substring(front + 1)
+                methodName.substring(front, front + 1) + methodName.substring(front + 1)
             } else {
-                fieldName = methodName.substring(front, front + 1).toLowerCase() + methodName.substring(front + 1)
+                methodName.substring(front, front + 1).toLowerCase() + methodName.substring(front + 1)
             }
         } else {
-            fieldName = Constants.String.BLANK
+            Constants.String.BLANK
         }
-        return fieldName
     }
 
     /**
@@ -77,15 +73,13 @@ object ObjectUtil {
      */
     @JvmOverloads
     fun methodNameToFieldName(methodName: String, ignoreFirstLetterCase: Boolean = false): String {
-        val fieldName: String
-        if (methodName.startsWith(Constants.Method.PREFIX_GET) && methodName != Constants.Method.GET_CLASS) {
-            fieldName = ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_GET, methodName, ignoreFirstLetterCase)
+        return if (methodName.startsWith(Constants.Method.PREFIX_GET) && methodName != Constants.Method.GET_CLASS) {
+            methodNameToFieldName(Constants.Method.PREFIX_GET, methodName, ignoreFirstLetterCase)
         } else if (methodName.startsWith(Constants.Method.PREFIX_IS)) {
-            fieldName = ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_IS, methodName, ignoreFirstLetterCase)
+            methodNameToFieldName(Constants.Method.PREFIX_IS, methodName, ignoreFirstLetterCase)
         } else {
-            fieldName = Constants.String.BLANK
+            Constants.String.BLANK
         }
-        return fieldName
     }
 
     /**
@@ -189,12 +183,12 @@ object ObjectUtil {
     /**
      * judge the object is it the entity of class or interface
      *
-     * @param object
+     * @param instance
      * @param clazz
      * @return boolean
      */
-    fun isEntity(value: Any, clazz: Class<*>): Boolean {
-        return isInheritanceOrInterfaceImplement(value.javaClass, clazz)
+    fun isEntity(instance: Any, clazz: Class<*>): Boolean {
+        return isInheritanceOrInterfaceImplement(instance.javaClass, clazz)
     }
 
     /**
@@ -226,7 +220,6 @@ object ObjectUtil {
         } catch (e: Exception) {
             throw ObjectUtilException(e)
         }
-
         return value
     }
 

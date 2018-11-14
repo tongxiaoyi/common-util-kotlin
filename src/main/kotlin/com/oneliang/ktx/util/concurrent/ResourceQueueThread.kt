@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
  */
 class ResourceQueueThread<T : Any>(private val resourceProcessor: ResourceProcessor<T>) : Runnable {
     companion object {
-        private val logger = LoggerManager.getLogger(ResourceQueueThread::class.java)
+        private val logger = LoggerManager.getLogger(ResourceQueueThread::class)
     }
 
     // addResource() may do before the start(),so must initialize it in self
