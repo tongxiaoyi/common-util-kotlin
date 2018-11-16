@@ -53,11 +53,11 @@ object JarUtil {
      * @throws FileLoadException
      */
     @Throws(FileLoadException::class)
-    fun searchClassList(jarClassLoader: JarClassLoader, jarFileRealPath: String, searchPackageName: String, annotationClass: Class<out Annotation>): List<KClass<*>> {
+    fun searchClassList(jarClassLoader: JarClassLoader, jarFileRealPath: String, searchPackageName: String, annotationClass: KClass<out Annotation>): List<KClass<*>> {
         val classList = mutableListOf<KClass<*>>()
         val allClassList = extractClassFromJarFile(jarClassLoader, jarFileRealPath, searchPackageName)
         for (clazz in allClassList) {
-            if (clazz.java.isAnnotationPresent(annotationClass)) {
+            if (clazz.java.isAnnotationPresent(annotationClass.java)) {
                 classList.add(clazz)
             }
         }
@@ -74,6 +74,9 @@ object JarUtil {
     @Throws(FileLoadException::class)
     fun extractClassFromJarFile(jarClassLoader: JarClassLoader, jarFileRealPath: String, packageName: String = Constants.String.BLANK): List<KClass<*>> {
         val classList = mutableListOf<KClass<*>>()
+        if (jarFileRealPath.isBlank()) {
+            return classList
+        }
         var jarInputStream: JarInputStream? = null
         try {
             jarClassLoader.addURL(URL(Constants.Protocol.FILE + jarFileRealPath))
@@ -102,12 +105,10 @@ object JarUtil {
         } catch (e: Exception) {
             throw FileLoadException(e)
         } finally {
-            if (jarInputStream != null) {
-                try {
-                    jarInputStream.close()
-                } catch (e: IOException) {
-                    throw FileLoadException(e)
-                }
+            try {
+                jarInputStream?.close()
+            } catch (e: IOException) {
+                throw FileLoadException(e)
             }
         }
         return classList

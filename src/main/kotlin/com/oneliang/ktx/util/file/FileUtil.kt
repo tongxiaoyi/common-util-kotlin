@@ -1,25 +1,16 @@
 package com.oneliang.ktx.util.file
 
 import com.oneliang.ktx.Constants
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.io.OutputStream
-import java.io.OutputStreamWriter
+import java.io.*
 import java.util.Properties
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.zip.ZipEntry
 import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
+import kotlin.collections.set
 
 object FileUtil {
 
@@ -837,6 +828,85 @@ object FileUtil {
      */
     private fun copyFileToFile(fromFile: String, toFile: String, fileCopyProcessor: FileCopyProcessor) {
         fileCopyProcessor.copyFileToFileProcess(fromFile, toFile, true)
+    }
+
+    /**
+     * get properties,if is not exist will auto create
+     *
+     * @param propertiesFullFilename
+     * @return Properties
+     */
+    fun getPropertiesAutoCreate(propertiesFullFilename: String): Properties {
+        if (!FileUtil.isExist(propertiesFullFilename)) {
+            FileUtil.createFile(propertiesFullFilename)
+        }
+        return getProperties(propertiesFullFilename)
+    }
+
+    /**
+     * get properties
+     *
+     * @param propertiesFullFilename
+     * @return Properties
+     */
+    fun getProperties(propertiesFullFilename: String): Properties {
+        val properties = Properties()
+        if (propertiesFullFilename.isNotBlank()) {
+            var inputStream: InputStream? = null
+            try {
+                inputStream = FileInputStream(propertiesFullFilename)
+                properties.load(inputStream)
+            } catch (e: Exception) {
+                throw FileUtilException(e)
+            } finally {
+                if (inputStream != null) {
+                    try {
+                        inputStream.close()
+                    } catch (e: Exception) {
+                        throw FileUtilException(e)
+                    }
+
+                }
+            }
+        }
+        return properties
+    }
+
+    /**
+     * get properties from properties file,will auto create
+     *
+     * @param file
+     * @return Properties
+     * @throws IOException
+     */
+    fun getProperties(file: File): Properties {
+        return getProperties(file.absolutePath)
+    }
+
+    /**
+     * save properties
+     *
+     * @param properties
+     * @param outputFullFilename
+     */
+    fun saveProperties(properties: Properties, outputFullFilename: String) {
+        var outputStream: OutputStream? = null
+        try {
+            outputStream = FileOutputStream(outputFullFilename)
+            properties.store(outputStream, null)
+        } catch (e: Exception) {
+            throw FileUtilException(e)
+        } finally {
+            if (outputStream != null) {
+                try {
+                    outputStream.flush()
+                    outputStream.close()
+                } catch (e: Exception) {
+                    throw FileUtilException(e)
+                }
+
+            }
+        }
     }
 
     class FileUtilException(cause: Throwable) : RuntimeException(cause)
