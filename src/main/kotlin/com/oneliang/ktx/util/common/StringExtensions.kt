@@ -22,7 +22,7 @@ fun String.toFloatSafely(defaultValue: Float = 0f): Float = try {
     defaultValue
 }
 
-fun String.toLongSafely(defaultValue: Double = 0.0): Double = try {
+fun String.toDoubleSafely(defaultValue: Double = 0.0): Double = try {
     this.toDouble()
 } catch (e: Exception) {
     defaultValue

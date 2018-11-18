@@ -29,7 +29,7 @@ object LoggerManager {
                 }
             }
         }
-        return if (logger == null) BaseLogger(Logger.Level.ERROR) else logger
+        return logger ?: BaseLogger(Logger.Level.ERROR)
     }
 
     /**

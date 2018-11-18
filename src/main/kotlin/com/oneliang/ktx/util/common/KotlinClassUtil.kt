@@ -6,7 +6,7 @@ import kotlin.reflect.KClass
 
 object KotlinClassUtil {
 
-    private val classTypeMap = mutableMapOf<KClass<*>, KClassType>()
+    private val classTypeMap = mutableMapOf<KClass<*>, ClassType>()
 
     private val baseClassMap = mutableMapOf<KClass<*>, KClass<*>>()
     private val simpleClassMap = mutableMapOf<KClass<*>, KClass<*>>()
@@ -17,7 +17,7 @@ object KotlinClassUtil {
 
     val DEFAULT_KOTLIN_CLASS_PROCESSOR: KotlinClassProcessor = DefaultKotlinClassProcessor()
 
-    enum class KClassType {
+    enum class ClassType {
         KOTLIN_STRING, KOTLIN_CHARACTER, KOTLIN_SHORT, KOTLIN_INTEGER, KOTLIN_LONG,
         KOTLIN_FLOAT, KOTLIN_DOUBLE, KOTLIN_BOOLEAN, KOTLIN_BYTE, JAVA_UTIL_DATE,
         //        CHAR, BYTE, SHORT, INT, LONG, FLOAT, DOUBLE, BOOLEAN,
@@ -28,34 +28,34 @@ object KotlinClassUtil {
     }
 
     init {
-        classTypeMap[String::class] = KClassType.KOTLIN_STRING
-        classTypeMap[Char::class] = KClassType.KOTLIN_CHARACTER
-        classTypeMap[Short::class] = KClassType.KOTLIN_SHORT
-        classTypeMap[Int::class] = KClassType.KOTLIN_INTEGER
-        classTypeMap[Long::class] = KClassType.KOTLIN_LONG
-        classTypeMap[Float::class] = KClassType.KOTLIN_FLOAT
-        classTypeMap[Double::class] = KClassType.KOTLIN_DOUBLE
-        classTypeMap[Boolean::class] = KClassType.KOTLIN_BOOLEAN
-        classTypeMap[Byte::class] = KClassType.KOTLIN_BYTE
-        classTypeMap[Date::class] = KClassType.JAVA_UTIL_DATE
+        classTypeMap[String::class] = ClassType.KOTLIN_STRING
+        classTypeMap[Char::class] = ClassType.KOTLIN_CHARACTER
+        classTypeMap[Short::class] = ClassType.KOTLIN_SHORT
+        classTypeMap[Int::class] = ClassType.KOTLIN_INTEGER
+        classTypeMap[Long::class] = ClassType.KOTLIN_LONG
+        classTypeMap[Float::class] = ClassType.KOTLIN_FLOAT
+        classTypeMap[Double::class] = ClassType.KOTLIN_DOUBLE
+        classTypeMap[Boolean::class] = ClassType.KOTLIN_BOOLEAN
+        classTypeMap[Byte::class] = ClassType.KOTLIN_BYTE
+        classTypeMap[Date::class] = ClassType.JAVA_UTIL_DATE
 
-        classTypeMap[Array<String>::class] = KClassType.KOTLIN_STRING_ARRAY
-        classTypeMap[Array<Char>::class] = KClassType.KOTLIN_CHAR_ARRAY
-        classTypeMap[Array<Short>::class] = KClassType.KOTLIN_SHORT_ARRAY
-        classTypeMap[Array<Int>::class] = KClassType.KOTLIN_INT_ARRAY
-        classTypeMap[Array<Long>::class] = KClassType.KOTLIN_LONG_ARRAY
-        classTypeMap[Array<Float>::class] = KClassType.KOTLIN_FLOAT_ARRAY
-        classTypeMap[Array<Double>::class] = KClassType.KOTLIN_DOUBLE_ARRAY
-        classTypeMap[Array<Boolean>::class] = KClassType.KOTLIN_BOOLEAN_ARRAY
-        classTypeMap[Array<Byte>::class] = KClassType.KOTLIN_BYTE_ARRAY
-        classTypeMap[CharArray::class] = KClassType.CHAR_ARRAY
-        classTypeMap[ByteArray::class] = KClassType.BYTE_ARRAY
-        classTypeMap[ShortArray::class] = KClassType.SHORT_ARRAY
-        classTypeMap[IntArray::class] = KClassType.INT_ARRAY
-        classTypeMap[LongArray::class] = KClassType.LONG_ARRAY
-        classTypeMap[FloatArray::class] = KClassType.FLOAT_ARRAY
-        classTypeMap[DoubleArray::class] = KClassType.DOUBLE_ARRAY
-        classTypeMap[BooleanArray::class] = KClassType.BOOLEAN_ARRAY
+        classTypeMap[Array<String>::class] = ClassType.KOTLIN_STRING_ARRAY
+        classTypeMap[Array<Char>::class] = ClassType.KOTLIN_CHAR_ARRAY
+        classTypeMap[Array<Short>::class] = ClassType.KOTLIN_SHORT_ARRAY
+        classTypeMap[Array<Int>::class] = ClassType.KOTLIN_INT_ARRAY
+        classTypeMap[Array<Long>::class] = ClassType.KOTLIN_LONG_ARRAY
+        classTypeMap[Array<Float>::class] = ClassType.KOTLIN_FLOAT_ARRAY
+        classTypeMap[Array<Double>::class] = ClassType.KOTLIN_DOUBLE_ARRAY
+        classTypeMap[Array<Boolean>::class] = ClassType.KOTLIN_BOOLEAN_ARRAY
+        classTypeMap[Array<Byte>::class] = ClassType.KOTLIN_BYTE_ARRAY
+        classTypeMap[CharArray::class] = ClassType.CHAR_ARRAY
+        classTypeMap[ByteArray::class] = ClassType.BYTE_ARRAY
+        classTypeMap[ShortArray::class] = ClassType.SHORT_ARRAY
+        classTypeMap[IntArray::class] = ClassType.INT_ARRAY
+        classTypeMap[LongArray::class] = ClassType.LONG_ARRAY
+        classTypeMap[FloatArray::class] = ClassType.FLOAT_ARRAY
+        classTypeMap[DoubleArray::class] = ClassType.DOUBLE_ARRAY
+        classTypeMap[BooleanArray::class] = ClassType.BOOLEAN_ARRAY
 
         simpleClassMap[String::class] = String::class
         simpleClassMap[Char::class] = Char::class
@@ -116,7 +116,7 @@ object KotlinClassUtil {
      * @param clazz
      * @return ClassType
      */
-    fun getClassType(clazz: KClass<*>): KClassType? {
+    fun getClassType(clazz: KClass<*>): ClassType? {
         return classTypeMap[clazz]
     }
 
