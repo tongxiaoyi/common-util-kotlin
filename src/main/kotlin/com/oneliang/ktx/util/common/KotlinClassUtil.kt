@@ -4,15 +4,16 @@ import com.oneliang.ktx.Constants
 import java.util.*
 import kotlin.reflect.KClass
 
+/**
+ * kotlin class has no base class(like int, long, short and so on)
+ */
 object KotlinClassUtil {
 
     private val classTypeMap = mutableMapOf<KClass<*>, ClassType>()
 
-    private val baseClassMap = mutableMapOf<KClass<*>, KClass<*>>()
     private val simpleClassMap = mutableMapOf<KClass<*>, KClass<*>>()
     private val baseArrayMap = mutableMapOf<KClass<*>, KClass<*>>()
     private val simpleArrayMap = mutableMapOf<KClass<*>, KClass<*>>()
-    private val baseClassNameMap = mutableMapOf<String, KClass<*>>()
     private val simpleClassNameMap = mutableMapOf<String, KClass<*>>()
 
     val DEFAULT_KOTLIN_CLASS_PROCESSOR: KotlinClassProcessor = DefaultKotlinClassProcessor()
@@ -104,8 +105,8 @@ object KotlinClassUtil {
      * @throws Exception class not found
      */
     fun getClass(classLoader: ClassLoader, className: String): KClass<*>? {
-        return if (baseClassNameMap.containsKey(className)) {
-            baseClassNameMap[className]
+        return if (simpleClassNameMap.containsKey(className)) {
+            simpleClassNameMap[className]
         } else {
             classLoader.loadClass(className).kotlin
         }
@@ -118,26 +119,6 @@ object KotlinClassUtil {
      */
     fun getClassType(clazz: KClass<*>): ClassType? {
         return classTypeMap[clazz]
-    }
-
-    /**
-     * is base class or not
-     * include boolean short int long float double byte char
-     * @param clazz
-     * @return boolean
-     */
-    fun isBaseClass(clazz: KClass<*>): Boolean {
-        return baseClassMap.containsKey(clazz)
-    }
-
-    /**
-     * is base class or not
-     * include boolean short int long float double byte char
-     * @param className
-     * @return boolean
-     */
-    fun isBaseClass(className: String): Boolean {
-        return baseClassNameMap.containsKey(className)
     }
 
     /**

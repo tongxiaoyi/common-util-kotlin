@@ -304,7 +304,7 @@ object JsonUtil {
                     val objectClass = classes[0].kotlin
                     if (jsonObject.has(fieldName)) {
                         try {
-                            if (KotlinClassUtil.isBaseClass(objectClass)) {
+                            if (KotlinClassUtil.isSimpleClass(objectClass)) {
                                 if (!jsonObject.isNull(fieldName)) {
                                     value = KotlinClassUtil.changeType(objectClass, arrayOf(jsonObject.get(fieldName).toString()), fieldName, classProcessor)
                                 } else {
@@ -320,7 +320,7 @@ object JsonUtil {
                                 }
                             }
                         } catch (e: Exception) {
-                            if (KotlinClassUtil.isBaseClass(objectClass)) {
+                            if (KotlinClassUtil.isSimpleClass(objectClass)) {
                                 value = KotlinClassUtil.changeType(objectClass, emptyArray(), fieldName, classProcessor)
                             } else {
                                 value = null
