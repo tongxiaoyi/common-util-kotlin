@@ -5,9 +5,9 @@ class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLo
     /**
      * log
      */
-    override fun log(level: Logger.Level, message: Any, throwable: Throwable?) {
+    override fun log(level: Logger.Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
         for (logger in this.loggerList) {
-            logger.log(level, message, throwable)
+            logger.log(level, message, throwable, extraInfo)
         }
     }
 

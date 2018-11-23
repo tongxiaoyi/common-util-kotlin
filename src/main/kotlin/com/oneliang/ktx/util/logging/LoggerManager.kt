@@ -9,6 +9,7 @@ import kotlin.reflect.KClass
  * @author oneliang
  */
 object LoggerManager {
+    private val DEFAULT_LOGGER = BaseLogger(Logger.Level.ERROR)
     private val loggerMap = ConcurrentHashMap<KClass<*>, Logger>()
     private val patternLoggerMap = ConcurrentHashMap<String, Logger>()
     private val loggerPatternSet = ConcurrentSkipListSet<String>()
@@ -24,12 +25,12 @@ object LoggerManager {
             val className = clazz.java.name
             for (patternKey in loggerPatternSet) {
                 if (className.matchPattern(patternKey)) {
-                    logger = patternLoggerMap.get(patternKey)
+                    logger = patternLoggerMap[patternKey]
                     break
                 }
             }
         }
-        return logger ?: BaseLogger(Logger.Level.ERROR)
+        return logger ?: DEFAULT_LOGGER
     }
 
     /**

@@ -17,8 +17,8 @@ class FileLogger(level: Level, outputFile: File) : BaseLogger(level) {
         }
     }
 
-    override fun log(level: Level, message: Any, throwable: Throwable?) {
-        val messageString = this.processMessage(level, message, throwable) + Constants.String.CRLF_STRING
+    override fun log(level: Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
+        val messageString = this.processMessage(level, message, throwable, extraInfo) + Constants.String.CRLF_STRING
         try {
             this.fileOutputStream?.write(messageString.toByteArray())
             if (throwable != null) {

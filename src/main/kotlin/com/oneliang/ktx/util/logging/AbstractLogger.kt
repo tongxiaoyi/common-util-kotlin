@@ -1,5 +1,6 @@
 package com.oneliang.ktx.util.logging
 
+import com.oneliang.ktx.Constants
 import com.oneliang.ktx.util.logging.Logger.Level
 
 
@@ -83,7 +84,16 @@ abstract class AbstractLogger(private val level: Level) : Logger {
      */
     private fun logByLevel(level: Level, message: Any, throwable: Throwable? = null) {
         if (level.ordinal >= this.level.ordinal) {
-            log(level, message, throwable)
+            val extraInfo = ExtraInfo()
+            val stackTraceArray = Thread.currentThread().stackTrace
+            if (stackTraceArray.size > 2) {
+                val stackTrace = stackTraceArray[2]
+                extraInfo.className = stackTrace.className
+                extraInfo.methodName = stackTrace.methodName
+                extraInfo.lineNumber = stackTrace.lineNumber
+                extraInfo.filename = stackTrace.fileName
+            }
+            log(level, message, throwable, extraInfo)
         }
     }
 
@@ -94,5 +104,12 @@ abstract class AbstractLogger(private val level: Level) : Logger {
      * @param message
      * @param throwable
      */
-    abstract fun log(level: Level, message: Any, throwable: Throwable?)
+    abstract fun log(level: Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo)
+
+    class ExtraInfo {
+        var className = Constants.String.BLANK
+        var methodName = Constants.String.BLANK
+        var lineNumber = 0
+        var filename = Constants.String.BLANK
+    }
 }
