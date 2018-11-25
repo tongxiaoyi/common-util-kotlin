@@ -228,6 +228,6 @@ class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
                 value = values
             }
         }
-        return value as T
+        return value as T?
     }
 }

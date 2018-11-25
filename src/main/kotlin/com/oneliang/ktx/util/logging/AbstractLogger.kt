@@ -86,8 +86,8 @@ abstract class AbstractLogger(private val level: Level) : Logger {
         if (level.ordinal >= this.level.ordinal) {
             val extraInfo = ExtraInfo()
             val stackTraceArray = Thread.currentThread().stackTrace
-            if (stackTraceArray.size > 2) {
-                val stackTrace = stackTraceArray[2]
+            if (stackTraceArray.size > 4) {
+                val stackTrace = stackTraceArray[4]
                 extraInfo.className = stackTrace.className
                 extraInfo.methodName = stackTrace.methodName
                 extraInfo.lineNumber = stackTrace.lineNumber
