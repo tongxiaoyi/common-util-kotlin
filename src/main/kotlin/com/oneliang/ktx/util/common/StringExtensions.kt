@@ -29,10 +29,16 @@ fun String.toDoubleSafely(defaultValue: Double = 0.0): Double = try {
     defaultValue
 }
 
-fun String.toBooleanSafely(defaultValue: Boolean = false): Boolean = try {
-    this.toBoolean()
-} catch (e: Exception) {
-    defaultValue
+fun String.toBooleanSafely(defaultValue: Boolean = false): Boolean {
+    return if (this.isBlank()) {
+        defaultValue
+    } else if (this.equals(true.toString(), true)) {
+        true
+    } else if (this.equals(false.toString(), true)) {
+        false
+    } else {
+        defaultValue
+    }
 }
 
 fun String.hexStringToByteArray(): ByteArray = ByteArray(this.length / 2) { this.substring(it * 2, it * 2 + 2).toInt(16).toByte() }
