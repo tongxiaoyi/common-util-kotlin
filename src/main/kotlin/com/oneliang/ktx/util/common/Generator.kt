@@ -7,23 +7,43 @@ import java.awt.image.BufferedImage
 import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
-import java.nio.charset.Charset
 import java.security.MessageDigest
-import java.util.Random
-import java.util.UUID
+import java.util.*
 
 object Generator {
     private val characters = charArrayOf('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z')
-    private val FONT_FAMILY_TIMES_NEW_ROMAN = "Times New Roman"
-    private val COUNT_MAX_LENGTH = 3
-    private val COUNT_MAX_VALUE = 999
+    private const val FONT_FAMILY_TIMES_NEW_ROMAN = "Times New Roman"
+    private const val COUNT_MAX_LENGTH = 3
+    private const val COUNT_MAX_VALUE = 999
+    private val countThreadLocal = object : ThreadLocal<Int>() {
+        override fun initialValue(): Int {
+            return 0
+        }
+    }
 
+    /**
+     * the union id generator
+     *
+     * @return String
+     */
+    fun ID(): String {
+        var count = countThreadLocal.get()
+        val threadId = Thread.currentThread().id
+        val timeMillis = System.currentTimeMillis()
+        val result = timeMillis.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH + 1 - threadId.toString().length) + threadId.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH - count.toString().length) + count.toString()
+        count++
+        if (count > COUNT_MAX_VALUE) {
+            count = 0
+        }
+        countThreadLocal.set(count)
+        return result
+    }
 
     /**
      * the uuid generator
      * @return String
      */
-    fun UUID(): String? {
+    fun UUID(): String {
         return UUID.randomUUID().toString()
     }
 
@@ -48,7 +68,7 @@ object Generator {
      * @param size
      * @return String
      */
-    fun randomString(size: Int): String? {
+    fun randomString(size: Int): String {
         val stringBuilder = StringBuilder()
         val random = Random()
         for (i in 0 until size) {
@@ -70,10 +90,10 @@ object Generator {
         val bufferedImage = BufferedImage(width, height, BufferedImage.TYPE_INT_RGB)
         val graphics = bufferedImage.getGraphics()
         val random = Random()
-        graphics.setColor(getRandomColor(200, 250))
+        graphics.color = getRandomColor(200, 250)
         graphics.fillRect(0, 0, width, height)
-        graphics.setFont(Font(FONT_FAMILY_TIMES_NEW_ROMAN, Font.PLAIN, 18))
-        graphics.setColor(getRandomColor(160, 200))
+        graphics.font = Font(FONT_FAMILY_TIMES_NEW_ROMAN, Font.PLAIN, 18)
+        graphics.color = getRandomColor(160, 200)
         for (i in 0..154) {
             val x = random.nextInt(width)
             val y = random.nextInt(height)
@@ -82,7 +102,7 @@ object Generator {
             graphics.drawLine(x, y, x + xl, y + yl)
         }
         for (i in 0 until string.length) {
-            graphics.setColor(Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)))
+            graphics.color = Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110))
             graphics.drawString(string.get(i).toString(), 14 * i + 6, 16)
         }
         graphics.dispose()
@@ -95,7 +115,7 @@ object Generator {
      * @param backColor
      * @return Color
      */
-    private fun getRandomColor(frontColor: Int, backColor: Int): Color? {
+    private fun getRandomColor(frontColor: Int, backColor: Int): Color {
         val random = Random()
         val newFrontColor = if (frontColor > 0xFF) 0xFF else frontColor
         val newBackColor = if (backColor > 0xFF) 0xFF else backColor
@@ -110,7 +130,7 @@ object Generator {
      * @return byte[]
      */
     fun MD5ByteArray(byteArray: ByteArray): ByteArray {
-        var result: ByteArray
+        val result: ByteArray
         try {
             val messageDigest = MessageDigest.getInstance("MD5")
             messageDigest.update(byteArray)
@@ -221,8 +241,7 @@ object Generator {
 		 *
 		 * 对上面的数据进行哈希运算。
 		 */
-        val hmacMd5Bytes = MD5ByteArray(secondAppendResult)
-        return hmacMd5Bytes
+        return MD5ByteArray(secondAppendResult)
     }
 
     /**
