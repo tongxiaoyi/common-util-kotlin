@@ -48,7 +48,7 @@ object HttpUtil {
         })
         val byteArray = byteArrayOutputStream.toByteArray()
         var result: String = Constants.String.BLANK
-        if (byteArray.size > 0) {
+        if (byteArray.isNotEmpty()) {
             try {
                 result = String(byteArray, Charset.forName(returnEncoding))
             } catch (e: UnsupportedEncodingException) {
@@ -108,7 +108,7 @@ object HttpUtil {
         })
         val byteArray = byteArrayOutputStream.toByteArray()
         var result: String = Constants.String.BLANK
-        if (byteArray.size > 0) {
+        if (byteArray.isNotEmpty()) {
             try {
                 result = String(byteArray, Charset.forName(returnEncoding))
             } catch (e: UnsupportedEncodingException) {
@@ -146,7 +146,7 @@ object HttpUtil {
     fun sendRequestPostWithBytes(httpUrl: String, httpHeaderList: List<HttpNameValue> = emptyList(), byteArray: ByteArray = ByteArray(0), timeout: Int = DEFAULT_TIMEOUT, advancedOption: AdvancedOption? = null): String {
         val tempByteArray = sendRequestPostWithWholeBytes(httpUrl, httpHeaderList, byteArray, timeout, advancedOption)
         var result: String = Constants.String.BLANK
-        if (tempByteArray.size > 0) {
+        if (tempByteArray.isNotEmpty()) {
             try {
                 result = String(tempByteArray, Charsets.UTF_8)
             } catch (e: UnsupportedEncodingException) {
@@ -270,7 +270,7 @@ object HttpUtil {
         })
         val byteArray = byteArrayOutputStream.toByteArray()
         var result: String = Constants.String.BLANK
-        if (byteArray.size > 0) {
+        if (byteArray.isNotEmpty()) {
             try {
                 result = String(byteArray, Charset.forName(returnEncoding))
             } catch (e: UnsupportedEncodingException) {
@@ -360,13 +360,13 @@ object HttpUtil {
                 proxy = Proxy(Proxy.Type.HTTP, inetSocketAddress)
             }
             val httpUrlConnection = url.openConnection(proxy) as HttpURLConnection
-            httpUrlConnection.setDoOutput(true)
-            httpUrlConnection.setDoInput(true)
-            httpUrlConnection.setRequestMethod(method)
-            httpUrlConnection.setUseCaches(false)
-            httpUrlConnection.setInstanceFollowRedirects(true)
-            httpUrlConnection.setConnectTimeout(timeout)
-            httpUrlConnection.setReadTimeout(timeout)
+            httpUrlConnection.doOutput = true
+            httpUrlConnection.doInput = true
+            httpUrlConnection.requestMethod = method
+            httpUrlConnection.useCaches = false
+            httpUrlConnection.instanceFollowRedirects = true
+            httpUrlConnection.connectTimeout = timeout
+            httpUrlConnection.readTimeout = timeout
             if (httpHeaderList.isNotEmpty()) {
                 for (httpParameter in httpHeaderList) {
                     httpUrlConnection.setRequestProperty(httpParameter.name, httpParameter.value)
@@ -390,7 +390,7 @@ object HttpUtil {
             if (method.isNotBlank() && method.equals(Constants.Http.RequestMethod.POST, ignoreCase = true)) {
                 val outputStream = httpUrlConnection.getOutputStream()
                 outputStream.write(content.toString().toByteArray(Charsets.UTF_8))
-                if (streamByteArray.size > 0) {
+                if (streamByteArray.isNotEmpty()) {
                     outputStream.write(streamByteArray)
                     outputStream.flush()
                 } else {
@@ -400,12 +400,12 @@ object HttpUtil {
                 }
                 outputStream.close()
             }
-            val responseCode = httpUrlConnection.getResponseCode()
-            val headerFieldMap = httpUrlConnection.getHeaderFields() ?: emptyMap()
+            val responseCode = httpUrlConnection.responseCode
+            val headerFieldMap = httpUrlConnection.headerFields ?: emptyMap()
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 if (callback != null) {
-                    val contentLength = httpUrlConnection.getContentLength()
-                    val responseInputStream = httpUrlConnection.getInputStream()
+                    val contentLength = httpUrlConnection.contentLength
+                    val responseInputStream = httpUrlConnection.inputStream
                     try {
                         callback.httpOkCallback(headerFieldMap, responseInputStream, contentLength)
                     } catch (e: Exception) {

@@ -216,9 +216,9 @@ object ObjectUtil {
         }
 
         try {
-            value = method.invoke(instance, arrayOf<Any>())
+            value = method.invoke(instance)
         } catch (e: Exception) {
-            throw ObjectUtilException(e)
+            throw ObjectUtilException("Invoke method exception, method:$methodName, field:$fieldName", e)
         }
         return value
     }
