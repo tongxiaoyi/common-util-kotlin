@@ -116,3 +116,33 @@ fun CharSequence.parseStringGroup(regex: String, firstRegex: String = Constants.
     }
     return list
 }
+
+fun String?.nullToBlank(): String {
+    return this ?: Constants.String.BLANK
+}
+
+object UnicodeRegex {
+    const val REGEX_ALL = "\\\\u[A-Za-z0-9]*"
+    const val REGEX_CHINESE = "\\\\u[A-Za-z0-9]{4}"
+    const val REGEX_ENGLISH_AND_NUMBER = "\\\\u[A-Za-z0-9]{2}"
+    const val REGEX_SPECIAL = "\\\\u[A-Za-z0-9]{1}"
+    internal const val FIRST_REGEX = "\\\\u"
+}
+
+fun String.toUnicode(): String {
+    val stringBuilder = StringBuilder()
+    val charArray = this.toCharArray()
+    for (char in charArray) {
+        stringBuilder.append("\\u" + Integer.toHexString(char.toInt()).toUpperCase())
+    }
+    return stringBuilder.toString()
+}
+
+fun String.fromUnicode(regex: String = UnicodeRegex.REGEX_ALL): String {
+    val groupList = this.parseStringGroup(regex, com.oneliang.ktx.util.common.UnicodeRegex.FIRST_REGEX, Constants.String.BLANK, 0)
+    var tempResult: String = this
+    for (group in groupList) {
+        tempResult = tempResult.replaceFirst(regex.toRegex(), Integer.parseInt(group, 16).toChar().toString())
+    }
+    return tempResult
+}
