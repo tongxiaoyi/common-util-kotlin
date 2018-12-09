@@ -48,22 +48,6 @@ object Generator {
     }
 
     /**
-     * MD5 generator
-     *
-     * @param source
-     * @return MD5 string
-     */
-    fun MD5(source: String): String {
-        val string: String
-        try {
-            string = MD5ByteArray(source.toByteArray(Charsets.UTF_8)).toHexString()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-        return string
-    }
-
-    /**
      * random string
      * @param size
      * @return String
