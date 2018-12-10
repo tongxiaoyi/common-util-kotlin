@@ -171,7 +171,7 @@ object JsonUtil {
      * @param ignoreFirstLetterCase
      * @return json
     </T> */
-    fun <T : Any> iterableToJson(iterable: Iterable<T>, fieldMap: Map<String, String>, jsonProcessor: JsonProcessor, ignoreFirstLetterCase: Boolean): String? {
+    fun <T : Any> iterableToJson(iterable: Iterable<T>, fieldMap: Map<String, String>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
         val string = StringBuilder()
         string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT)
         val iterator = iterable.iterator()
