@@ -156,6 +156,11 @@ object Constants {
          * greater then ">"
          */
         const val GREATER_THEN = ">"
+
+        /**
+         * tilde "~"
+         */
+        const val TILDE = "~"
     }
 
     object Encoding {
