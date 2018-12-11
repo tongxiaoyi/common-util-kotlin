@@ -30,14 +30,11 @@ fun String.toDoubleSafely(defaultValue: Double = 0.0): Double = try {
 }
 
 fun String.toBooleanSafely(defaultValue: Boolean = false): Boolean {
-    return if (this.isBlank()) {
-        defaultValue
-    } else if (this.equals(true.toString(), true)) {
-        true
-    } else if (this.equals(false.toString(), true)) {
-        false
-    } else {
-        defaultValue
+    return when {
+        this.isBlank() -> defaultValue
+        this.equals(true.toString(), true) -> true
+        this.equals(false.toString(), true) -> false
+        else -> defaultValue
     }
 }
 
