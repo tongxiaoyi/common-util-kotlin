@@ -9,7 +9,6 @@ import java.util.zip.ZipException
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 import kotlin.collections.set
 
 object FileUtil {
@@ -41,12 +40,12 @@ object FileUtil {
         var result = false
         while (!queue.isEmpty()) {
             val file = queue.poll()
-            if (file.isDirectory()) {
+            if (file.isDirectory) {
                 val fileArray = file.listFiles()
                 if (fileArray != null) {
                     queue.addAll(fileArray)
                 }
-            } else if (file.isFile()) {
+            } else if (file.isFile) {
                 if (file.name.toLowerCase().endsWith(fileSuffix.toLowerCase())) {
                     result = true
                     break
@@ -80,7 +79,7 @@ object FileUtil {
     fun createFile(fullFilename: String): Boolean {
         if (fullFilename.isBlank()) return false
         val file = File(fullFilename)
-        createDirectory(file.getParent())
+        createDirectory(file.parent)
         try {
             file.setReadable(true, false)
             file.setWritable(true, true)
@@ -105,7 +104,7 @@ object FileUtil {
         queue.add(directoryFile)
         while (!queue.isEmpty()) {
             val file = queue.poll()
-            if (file.isDirectory()) {
+            if (file.isDirectory) {
                 val fileArray = file.listFiles()
                 if (fileArray != null) {
                     queue.addAll(fileArray)
@@ -147,7 +146,7 @@ object FileUtil {
         val fromDirectoryPath = fromDirectoryFile.absolutePath
         var toDirectoryPath = toDirectoryFile.absolutePath
         if (fromDirectoryPath == toDirectoryPath) {
-            toDirectoryPath = toDirectoryPath + "_copy"
+            toDirectoryPath += "_copy"
         }
         val queue = ConcurrentLinkedQueue<File>()
         queue.add(fromDirectoryFile)
@@ -155,7 +154,7 @@ object FileUtil {
             val file = queue.poll()
             val fromFilePath = file.absolutePath
             val toFilePath = toDirectoryPath + fromFilePath.substring(fromDirectoryPath.length)
-            if (file.isDirectory()) {
+            if (file.isDirectory) {
                 val result = fileCopyProcessor.copyFileToFileProcess(fromFilePath, toFilePath, false)
                 if (result) {
                     val fileArray = file.listFiles()
@@ -163,7 +162,7 @@ object FileUtil {
                         queue.addAll(fileArray)
                     }
                 }
-            } else if (file.isFile()) {
+            } else if (file.isFile) {
                 fileCopyProcessor.copyFileToFileProcess(fromFilePath, toFilePath, true)
             }
         }
@@ -177,7 +176,7 @@ object FileUtil {
     private fun copyFileToPath(fromFile: String, toPath: String, fileCopyProcessor: FileCopyProcessor) {
         val from = File(fromFile)
         val to = File(toPath)
-        if (from.exists() && from.isFile()) {
+        if (from.exists() && from.isFile) {
             createDirectory(toPath)
             val tempFromFile = from.absolutePath
             val tempToFile = to.absolutePath + File.separator + from.getName()
@@ -204,7 +203,7 @@ object FileUtil {
             val enumeration = zipFile.entries()
             while (enumeration.hasMoreElements()) {
                 val zipEntry = enumeration.nextElement()
-                val zipEntryName = zipEntry.getName()
+                val zipEntryName = zipEntry.name
                 var contains = false
                 if (zipEntryNameList.isEmpty()) {
                     contains = true
@@ -216,7 +215,7 @@ object FileUtil {
                 if (contains) {
                     val inputStream = zipFile.getInputStream(zipEntry)
                     val outputFullFilename = outputDirectoryAbsolutePath + Constants.Symbol.SLASH_LEFT + zipEntryName
-                    if (zipEntry.isDirectory()) {
+                    if (zipEntry.isDirectory) {
                         createDirectory(outputFullFilename)
                     } else {
                         createFile(outputFullFilename)
@@ -290,8 +289,8 @@ object FileUtil {
         val needToAddEntryNameList = mutableListOf<String>()
         if (zipEntryPathList.isNotEmpty()) {
             for (zipEntryPath in zipEntryPathList) {
-                zipEntryPathMap[zipEntryPath.zipEntry.getName()] = zipEntryPath
-                needToAddEntryNameList.add(zipEntryPath.zipEntry.getName())
+                zipEntryPathMap[zipEntryPath.zipEntry.name] = zipEntryPath
+                needToAddEntryNameList.add(zipEntryPath.zipEntry.name)
             }
         }
         try {
@@ -340,7 +339,7 @@ object FileUtil {
                 val inputStream = FileInputStream(zipEntryPath.fullFilename)
                 val newInputStream: InputStream
                 if (zipProcessor != null) {
-                    newInputStream = zipProcessor.zipEntryProcess(zipEntry.getName(), inputStream)
+                    newInputStream = zipProcessor.zipEntryProcess(zipEntry.name, inputStream)
                     if (newInputStream !== inputStream) {
                         inputStream.close()
                     }
@@ -792,7 +791,7 @@ object FileUtil {
      */
     private fun getZipEntryMap(zipFullFilename: String): Map<String, String> {
         var zipFile: ZipFile? = null
-        val map = HashMap<String, String>()
+        val map = mutableMapOf<String, String>()
         try {
             zipFile = ZipFile(zipFullFilename)
             val entries = zipFile.entries()
