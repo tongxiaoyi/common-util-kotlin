@@ -1,13 +1,9 @@
 package com.oneliang.ktx.util.common
 
-import com.oneliang.ktx.Constants
 import java.awt.Color
 import java.awt.Font
 import java.awt.image.BufferedImage
 import java.io.FileInputStream
-import java.io.IOException
-import java.io.InputStream
-import java.security.MessageDigest
 import java.util.*
 
 object Generator {
@@ -110,22 +106,6 @@ object Generator {
     }
 
     /**
-     * @param byteArray
-     * @return byte[]
-     */
-    fun MD5ByteArray(byteArray: ByteArray): ByteArray {
-        val result: ByteArray
-        try {
-            val messageDigest = MessageDigest.getInstance("MD5")
-            messageDigest.update(byteArray)
-            result = messageDigest.digest()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-        return result
-    }
-
-    /**
      * refer to rfc2104 HMAC
      * @param key
      * @param data
@@ -157,7 +137,7 @@ object Generator {
 		 * 如果密钥长度，大于64字节，就使用哈希算法，计算其摘要，作为真正的密钥。
 		 */
         if (key.size > length) {
-            actualKey = MD5ByteArray(key)
+            actualKey = key.MD5()
         }
         for (i in actualKey.indices) {
             keyArr[i] = actualKey[i]
@@ -198,7 +178,7 @@ object Generator {
 		 *
 		 * 使用哈希算法计算上面结果的摘要。
 		 */
-        val firstHashResult = MD5ByteArray(firstAppendResult)
+        val firstHashResult = firstAppendResult.MD5()
 /*
 		 * calc K XOR opad
 		 *
@@ -225,7 +205,7 @@ object Generator {
 		 *
 		 * 对上面的数据进行哈希运算。
 		 */
-        return MD5ByteArray(secondAppendResult)
+        return secondAppendResult.MD5()
     }
 
     /**
@@ -236,37 +216,9 @@ object Generator {
     fun MD5File(fullFilename: String): String {
         val result: String
         try {
-            result = MD5(FileInputStream(fullFilename))
+            result = FileInputStream(fullFilename).MD5().toHexString()
         } catch (e: Exception) {
             throw RuntimeException(e)
-        }
-        return result
-    }
-
-    /**
-     * md5
-     * @param inputStream
-     * @return String
-     */
-    fun MD5(inputStream: InputStream): String {
-        val result: String
-        try {
-            val messageDigest = MessageDigest.getInstance("MD5")
-            val buffer = ByteArray(Constants.Capacity.BYTES_PER_KB)
-            var readCount = inputStream.read(buffer, 0, buffer.size)
-            while (readCount != -1) {
-                messageDigest.update(buffer, 0, readCount)
-                readCount = inputStream.read(buffer, 0, buffer.size)
-            }
-            result = messageDigest.digest().toHexString()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        } finally {
-            try {
-                inputStream.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
         }
         return result
     }

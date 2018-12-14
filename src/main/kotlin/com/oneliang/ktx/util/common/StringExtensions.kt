@@ -143,7 +143,3 @@ fun String.fromUnicode(regex: String = UnicodeRegex.REGEX_ALL): String {
     }
     return tempResult
 }
-
-fun String.MD5(): String {
-    return Generator.MD5ByteArray(this.toByteArray(Charsets.UTF_8)).toHexString()
-}
