@@ -112,7 +112,7 @@ object ObjectUtil {
         }
         while (!queue.isEmpty()) {
             val currentClass = queue.poll()
-            val superclass = currentClass.getSuperclass()
+            val superclass = currentClass.superclass
             if (superclass != null) {
                 queue.add(superclass)
                 if (isAllSuperclass) {
@@ -194,7 +194,7 @@ object ObjectUtil {
     /**
      * invoke getter or is method for field
      *
-     * @param object
+     * @param instance
      * @param fieldName
      * @param ignoreFirstLetterCase
      * @return Object
@@ -300,7 +300,7 @@ object ObjectUtil {
     /**
      * method invoke
      *
-     * @param object
+     * @param instance
      * @param methodName
      * @param parameterTypes
      * @param parameterValues
@@ -325,7 +325,7 @@ object ObjectUtil {
     /**
      * method invoke
      * @param clazz
-     * @param object
+     * @param instance
      * @param methodName
      * @param parameterTypes
      * @param parameterValues
