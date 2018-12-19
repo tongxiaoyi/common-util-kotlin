@@ -2,7 +2,6 @@ package com.oneliang.ktx.util.json
 
 import com.oneliang.ktx.Constants
 
-
 fun Array<*>.toJson(jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = joinToString(prefix = Constants.Symbol.MIDDLE_BRACKET_LEFT, postfix = Constants.Symbol.MIDDLE_BRACKET_RIGHT, separator = Constants.Symbol.COMMA) {
     if (it != null) {
         jsonProcessor.process<Any>(null, Constants.String.BLANK, it, false)
@@ -42,3 +41,7 @@ fun FloatArray.toJson() = joinToString(prefix = Constants.Symbol.MIDDLE_BRACKET_
 fun DoubleArray.toJson() = joinToString(prefix = Constants.Symbol.MIDDLE_BRACKET_LEFT, postfix = Constants.Symbol.MIDDLE_BRACKET_RIGHT, separator = Constants.Symbol.COMMA) {
     it.toString()
 }
+
+fun <T : Any> Iterable<T>.toJson(fields: Array<String> = emptyArray(), jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = JsonUtil.iterableToJson(this, fields, jsonProcessor)
+
+fun <T : Any> Iterable<T>.toJson(fieldMap: Map<String, String>, jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = JsonUtil.iterableToJson(this, fieldMap, jsonProcessor)
