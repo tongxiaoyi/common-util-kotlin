@@ -5,6 +5,11 @@ fun ByteArray.toHexString() = joinToString(separator = "", transform = hexString
 
 fun Array<Byte>.toHexString() = joinToString(separator = "", transform = hexStringTransform)
 
+private val binaryStringTransform: (Byte) -> CharSequence = { String.format("%8s", Integer.toBinaryString(it.toInt() and 0xFF)).replace(' ', '0') }
+fun ByteArray.toBinaryString() = joinToString(separator = "", transform = binaryStringTransform)
+
+fun Array<Byte>.toBinaryString() = joinToString(separator = "", transform = binaryStringTransform)
+
 private val toInt: ((Array<Byte>) -> Int) = {
     if (it.isNotEmpty() && it.size == 4) {
         var result = 0
