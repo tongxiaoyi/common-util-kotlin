@@ -77,3 +77,11 @@ fun <T : Any> Map<String, Array<String>>.toObjectList(clazz: Class<T>, classProc
     }
     return list
 }
+
+fun <K, V, R> Map<K, V>.toList(transform: (K, V) -> R): List<R> {
+    val list = mutableListOf<R>()
+    this.forEach { (key, value) ->
+        list.add(transform(key, value))
+    }
+    return list
+}
