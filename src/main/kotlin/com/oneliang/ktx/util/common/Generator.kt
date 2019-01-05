@@ -216,7 +216,7 @@ object Generator {
     fun MD5File(fullFilename: String): String {
         val result: String
         try {
-            result = FileInputStream(fullFilename).MD5().toHexString()
+            result = FileInputStream(fullFilename).MD5String()
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
