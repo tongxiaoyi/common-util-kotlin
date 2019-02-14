@@ -4,11 +4,11 @@ import com.oneliang.ktx.util.logging.LoggerManager
 
 object PieceUtil {
     private val logger = LoggerManager.getLogger(PieceUtil::class)
-    fun split(byteArray: ByteArray, pieceSize: Int, pieceIndex: Int): ByteArray {
+    fun split(byteArray: ByteArray, pieceSize: Int, pieceIndex: Int): Pair<ByteArray, Int> {
         val byteArrayTotalSize = byteArray.size
         val pieceCount = Math.ceil(byteArrayTotalSize.toDouble() / pieceSize).toInt()
         return if (pieceCount <= 1) {
-            byteArray
+            Pair(byteArray, pieceCount)
         } else {
             var tempPieceIndex = pieceIndex
             val length = if (tempPieceIndex < pieceCount - 1) {
@@ -20,7 +20,7 @@ object PieceUtil {
             val pieceByteArray = ByteArray(length)
             System.arraycopy(byteArray, tempPieceIndex * pieceSize, pieceByteArray, 0, length)
             logger.debug(String.format("piece count:%s, piece index:%s, length:%s, piece md5:%s", pieceCount, tempPieceIndex, length, pieceByteArray.MD5String()))
-            pieceByteArray
+            Pair(pieceByteArray, pieceCount)
         }
     }
 
