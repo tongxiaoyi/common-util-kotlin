@@ -4,6 +4,26 @@ import com.oneliang.ktx.util.logging.LoggerManager
 
 object PieceUtil {
     private val logger = LoggerManager.getLogger(PieceUtil::class)
+    fun split(byteArray: ByteArray, pieceSize: Int, pieceIndex: Int): ByteArray {
+        val byteArrayTotalSize = byteArray.size
+        val pieceCount = Math.ceil(byteArrayTotalSize.toDouble() / pieceSize).toInt()
+        return if (pieceCount <= 1) {
+            byteArray
+        } else {
+            var tempPieceIndex = pieceIndex
+            val length = if (tempPieceIndex < pieceCount - 1) {
+                pieceSize
+            } else {//last piece
+                tempPieceIndex = pieceCount - 1
+                byteArrayTotalSize - tempPieceIndex * pieceSize
+            }
+            val pieceByteArray = ByteArray(length)
+            System.arraycopy(byteArray, tempPieceIndex * pieceSize, pieceByteArray, 0, length)
+            logger.debug(String.format("piece count:%s, piece index:%s, length:%s, piece md5:%s", pieceCount, tempPieceIndex, length, pieceByteArray.MD5String()))
+            pieceByteArray
+        }
+    }
+
     fun split(byteArray: ByteArray, pieceSize: Int, splitProcessor: (pieceByteArray: ByteArray, pieceCount: Int, pieceIndex: Int) -> Unit) {
         val byteArrayTotalSize = byteArray.size
         val pieceCount = Math.ceil(byteArrayTotalSize.toDouble() / pieceSize).toInt()
@@ -25,15 +45,15 @@ object PieceUtil {
 //        Log.i(TAG, " byte array to response result:%s, cost:%s, md5:%s", result, (System.currentTimeMillis() - begin), byteArray.MD5String())
     }
 
-    fun merge(appenedByteArray: ByteArray, pieceByteArray: ByteArray, pieceCount: Int, pieceIndex: Int): Pair<Boolean, ByteArray> {
+    fun merge(appendedByteArray: ByteArray, pieceByteArray: ByteArray, pieceCount: Int, pieceIndex: Int): Pair<Boolean, ByteArray> {
         logger.debug(String.format("piece count:%s, piece index:%s, length:%s, piece md5:%s", pieceCount, pieceIndex, pieceByteArray.size, pieceByteArray.MD5String()))
         return if (pieceCount == 1) {
 //            wholeByteArray = pieceByteArray
             Pair(true, pieceByteArray)
         } else {
-            val currentSize = appenedByteArray.size
+            val currentSize = appendedByteArray.size
             val newResponseByteArray = ByteArray(currentSize + pieceByteArray.size)
-            System.arraycopy(appenedByteArray, 0, newResponseByteArray, 0, currentSize)
+            System.arraycopy(appendedByteArray, 0, newResponseByteArray, 0, currentSize)
             System.arraycopy(pieceByteArray, 0, newResponseByteArray, currentSize, pieceByteArray.size)
 //            wholeByteArray = newResponseByteArray
 //            pieceCount - 1 == pieceIndex
