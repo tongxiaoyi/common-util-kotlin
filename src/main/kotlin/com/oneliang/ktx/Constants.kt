@@ -6,10 +6,10 @@ object Constants {
     }
 
     object Time {
-        const val MILLSECONDS_OF_SECOND = 1000L
-        const val MILLSECONDS_OF_MINUTE = 60 * MILLSECONDS_OF_SECOND
-        const val MILLSECONDS_OF_HOUR = 60 * MILLSECONDS_OF_MINUTE
-        const val MILLSECONDS_OF_DAY = 24 * MILLSECONDS_OF_HOUR
+        const val MILLISECONDS_OF_SECOND = 1000L
+        const val MILLISECONDS_OF_MINUTE = 60 * MILLISECONDS_OF_SECOND
+        const val MILLISECONDS_OF_HOUR = 60 * MILLISECONDS_OF_MINUTE
+        const val MILLISECONDS_OF_DAY = 24 * MILLISECONDS_OF_HOUR
         const val SECOND_OF_MINUTE = 60L
         const val MINUTE_OF_HOUR = 60L
         const val SECONDS_OF_HOUR = SECOND_OF_MINUTE * MINUTE_OF_HOUR
