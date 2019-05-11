@@ -522,7 +522,7 @@ object FileUtil {
      * @param encoding
      * @param readFileContentProcessor
      */
-    fun readFileContentIgnoreLine(fullFilename: String, encoding: String, readFileContentProcessor: ReadFileContentProcessor) {
+    fun readFileContentIgnoreLine(fullFilename: String, encoding: String = Constants.Encoding.UTF8, readFileContentProcessor: ReadFileContentProcessor) {
         var inputStream: InputStream? = null
         try {
             inputStream = FileInputStream(fullFilename)
@@ -568,7 +568,7 @@ object FileUtil {
      * @param encoding
      * @param readFileContentProcessor
      */
-    fun readInputStreamContentIgnoreLine(inputStream: InputStream, encoding: String, readFileContentProcessor: ReadFileContentProcessor) {
+    fun readInputStreamContentIgnoreLine(inputStream: InputStream, encoding: String = Constants.Encoding.UTF8, readFileContentProcessor: ReadFileContentProcessor) {
         var bufferedReader: BufferedReader? = null
         try {
             bufferedReader = BufferedReader(InputStreamReader(inputStream, encoding))
@@ -589,7 +589,6 @@ object FileUtil {
                 } catch (e: Exception) {
                     throw FileUtilException(e)
                 }
-
             }
         }
     }
@@ -617,7 +616,6 @@ object FileUtil {
                 } catch (e: Exception) {
                     throw FileUtilException(e)
                 }
-
             }
         }
     }
@@ -682,7 +680,6 @@ object FileUtil {
                 } catch (e: IOException) {
                     throw FileUtilException(e)
                 }
-
             }
         }
     }
@@ -812,7 +809,6 @@ object FileUtil {
                 } catch (e: IOException) {
                     throw FileUtilException(e)
                 }
-
             }
         }
         return map
@@ -864,7 +860,6 @@ object FileUtil {
                     } catch (e: Exception) {
                         throw FileUtilException(e)
                     }
-
                 }
             }
         }
@@ -903,7 +898,6 @@ object FileUtil {
                 } catch (e: Exception) {
                     throw FileUtilException(e)
                 }
-
             }
         }
     }
