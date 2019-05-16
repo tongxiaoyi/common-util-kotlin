@@ -25,7 +25,7 @@ class ResourceQueueThread<T : Any>(private val resourceProcessor: ResourceProces
     private val lock = java.lang.Object()
 
     override fun run() {
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!Thread.currentThread().isInterrupted) {
             try {
                 if (!this.resourceQueue.isEmpty()) {
                     val resource = this.resourceQueue.poll()

@@ -161,4 +161,14 @@ abstract class ResourcePool<T : Any> : Runnable {
             }
         }
     }
+
+    /**
+     * interrupt
+     */
+    fun interrupt() {
+        if (this.thread != null) {
+            this.thread?.interrupt()
+            this.thread = null
+        }
+    }
 }
