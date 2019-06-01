@@ -24,17 +24,17 @@ object Encoder {
                 }
             }
             if (!excludeSign) {
-                if (Character.isDigit(character) || Character.isLowerCase(character) || Character.isUpperCase(character)) {
+                if (character.isDigit() || character.isLowerCaseLetter() || character.isUpperCaseLetter()) {
                     stringBuilder.append(character)
                 } else if (character.toInt() < 0x100) {
                     stringBuilder.append("%")
                     if (character.toInt() < 0x10) {
                         stringBuilder.append("0")
                     }
-                    stringBuilder.append(Integer.toString(character.toInt(), 16).toUpperCase())
+                    stringBuilder.append(character.toInt().toString(radix = 16).toUpperCase())
                 } else {
                     stringBuilder.append("%u")
-                    stringBuilder.append(Integer.toString(character.toInt(), 16).toUpperCase())
+                    stringBuilder.append(character.toInt().toString(radix = 16).toUpperCase())
                 }
             }
         }
@@ -55,11 +55,11 @@ object Encoder {
             pos = string.indexOf("%", lastPos)
             if (pos == lastPos) {
                 if (string[pos + 1] == 'u') {
-                    val character = Integer.parseInt(string.substring(pos + 2, pos + 6), 16).toChar()
+                    val character = string.substring(pos + 2, pos + 6).toInt(radix = 16).toChar()
                     stringBuilder.append(character)
                     lastPos = pos + 6
                 } else {
-                    val character = Integer.parseInt(string.substring(pos + 1, pos + 3), 16).toChar()
+                    val character = string.substring(pos + 1, pos + 3).toInt(radix = 16).toChar()
                     stringBuilder.append(character)
                     lastPos = pos + 3
                 }
@@ -79,6 +79,7 @@ object Encoder {
     @JvmStatic
     fun main(args: Array<String>) {
         var tmp = "~!@#$%^&*()_+|\\=-,erg./?><;'][{}\""
+
         println(tmp)
         tmp = escape(tmp, charArrayOf('.'))
         println(tmp)
