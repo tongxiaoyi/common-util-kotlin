@@ -25,31 +25,31 @@ class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
         val classType = KotlinClassUtil.getClassType(clazz)
         when (classType) {
             KotlinClassUtil.ClassType.KOTLIN_CHARACTER -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = Character.valueOf(values[0].toCharArray()[0])
+                value = values[0][0]
             }
             KotlinClassUtil.ClassType.KOTLIN_STRING -> if (values.isNotEmpty()) {
                 value = values[0]
             }
             KotlinClassUtil.ClassType.KOTLIN_BYTE -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = java.lang.Byte.valueOf(values[0])
+                value = values[0].toByte()
             }
             KotlinClassUtil.ClassType.KOTLIN_SHORT -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = java.lang.Short.valueOf(values[0])
+                value = values[0].toShort()
             }
             KotlinClassUtil.ClassType.KOTLIN_INTEGER -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = Integer.valueOf(values[0])
+                value = values[0].toInt()
             }
             KotlinClassUtil.ClassType.KOTLIN_LONG -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = java.lang.Long.valueOf(values[0])
+                value = values[0].toLong()
             }
             KotlinClassUtil.ClassType.KOTLIN_FLOAT -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = java.lang.Float.valueOf(values[0])
+                value = values[0].toFloat()
             }
             KotlinClassUtil.ClassType.KOTLIN_DOUBLE -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = java.lang.Double.valueOf(values[0])
+                value = values[0].toDouble()
             }
             KotlinClassUtil.ClassType.KOTLIN_BOOLEAN -> if (values.isNotEmpty() && values[0].isNotBlank()) {
-                value = java.lang.Boolean.valueOf(values[0])
+                value = values[0].toBoolean()
             }
             KotlinClassUtil.ClassType.JAVA_UTIL_DATE -> value = if (values.isEmpty() || values[0].isBlank()) {
                 null
@@ -74,7 +74,7 @@ class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
             KotlinClassUtil.ClassType.KOTLIN_CHAR_ARRAY -> {
                 val characterArray = Array(values.size) { i ->
                     if (values[i].isNotBlank()) {
-                        values[i].toCharArray()[0]
+                        values[i][0]
                     } else {
                         null
                     }
@@ -155,7 +155,7 @@ class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
             KotlinClassUtil.ClassType.CHAR_ARRAY -> {
                 val simpleCharArray = CharArray(values.size) { i ->
                     if (values[i].isNotBlank()) {
-                        values[i].toCharArray()[0]
+                        values[i][0]
                     } else {
                         0.toChar()
                     }

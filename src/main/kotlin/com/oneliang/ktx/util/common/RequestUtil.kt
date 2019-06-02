@@ -1,7 +1,6 @@
 package com.oneliang.ktx.util.common
 
 import com.oneliang.ktx.Constants
-import java.util.*
 
 /**
  * @author Dandelion
@@ -41,7 +40,7 @@ object RequestUtil {
 }
 
 fun Map<String, Array<String>>.toParameterString(): String {
-    var stringBuilder = StringBuilder()
+    val stringBuilder = StringBuilder()
     this.forEach { (key, value) ->
         value.forEach { it ->
             stringBuilder.append(key)
@@ -50,8 +49,9 @@ fun Map<String, Array<String>>.toParameterString(): String {
             stringBuilder.append(Constants.Symbol.AND)
         }
     }
-    if (stringBuilder.isNotEmpty()) {
-        stringBuilder = stringBuilder.delete(stringBuilder.length - 1, stringBuilder.length)
+    return if (stringBuilder.isNotEmpty()) {
+        stringBuilder.substring(0, stringBuilder.length - 1)
+    } else {
+        Constants.String.BLANK
     }
-    return stringBuilder.toString()
 }
