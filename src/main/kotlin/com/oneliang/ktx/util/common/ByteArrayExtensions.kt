@@ -10,6 +10,21 @@ fun ByteArray.toBinaryString() = joinToString(separator = "", transform = binary
 
 fun Array<Byte>.toBinaryString() = joinToString(separator = "", transform = binaryStringTransform)
 
+private val toShort: ((Array<Byte>) -> Short) = {
+    if (it.isNotEmpty() && it.size == 2) {
+        var result: Short = 0
+        for ((i, byte) in it.reversedArray().withIndex()) {
+            result = (result.toInt() or (byte.toInt() and 0xFF shl 8 * i)).toShort()
+        }
+        result
+    } else {
+        0
+    }
+}
+
+fun ByteArray.toShort(): Short = toShort(this.toTypedArray())
+fun Array<Byte>.toShort(): Short = toShort(this)
+
 private val toInt: ((Array<Byte>) -> Int) = {
     if (it.isNotEmpty() && it.size == 4) {
         var result = 0
