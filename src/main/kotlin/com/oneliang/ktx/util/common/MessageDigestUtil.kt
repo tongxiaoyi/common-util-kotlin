@@ -1,5 +1,6 @@
 package com.oneliang.ktx.util.common
 
+import com.oneliang.ktx.Constants
 import java.io.File
 import java.io.FileInputStream
 import java.io.InputStream
@@ -18,11 +19,11 @@ fun InputStream.MD5String(): String = this.MD5().toHexString()
 fun InputStream.SHA1(): ByteArray = this.digest(MessageDigestUtil.Algorithm.SHA1)
 fun InputStream.SHA1String(): String = this.SHA1().toHexString()
 
-fun File.MD5(): ByteArray = FileInputStream(this).MD5()
-fun File.MD5String(): String = this.MD5().toHexString()
+fun File.MD5(): ByteArray = if (!this.exists()) ByteArray(0) else FileInputStream(this).MD5()
+fun File.MD5String(): String = if (!this.exists()) Constants.String.BLANK else this.MD5().toHexString()
 
-fun File.SHA1(): ByteArray = FileInputStream(this).SHA1()
-fun File.SHA1String(): String = this.SHA1().toHexString()
+fun File.SHA1(): ByteArray = if (!this.exists()) ByteArray(0) else FileInputStream(this).SHA1()
+fun File.SHA1String(): String = if (!this.exists()) Constants.String.BLANK else this.SHA1().toHexString()
 
 object MessageDigestUtil {
 
