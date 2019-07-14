@@ -178,17 +178,14 @@ object Constants {
     }
 
     object Http {
-        object RequestMethod {
-            /**
-             * for request method
-             */
-            const val PUT = "PUT"
-            const val DELETE = "DELETE"
-            const val GET = "GET"
-            const val POST = "POST"
-            const val HEAD = "HEAD"
-            const val OPTIONS = "OPTIONS"
-            const val TRACE = "TRACE"
+        enum class RequestMethod(val value: kotlin.String) {
+            PUT("PUT"),
+            DELETE("DELETE"),
+            GET("GET"),
+            POST("POST"),
+            HEAD("HEAD"),
+            OPTIONS("OPTIONS"),
+            TRACE("TRACE")
         }
 
         object HeaderKey {

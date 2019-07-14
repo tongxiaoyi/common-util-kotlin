@@ -68,7 +68,7 @@ object HttpUtil {
      * @param callback
      */
     fun sendRequestGet(httpUrl: String, httpHeaderList: List<HttpNameValue> = emptyList(), timeout: Int = DEFAULT_TIMEOUT, advancedOption: AdvancedOption? = null, callback: Callback) {
-        sendRequest(httpUrl, Constants.Http.RequestMethod.GET, httpHeaderList, emptyList(), ByteArray(0), null, timeout, null, advancedOption, callback)
+        sendRequest(httpUrl, Constants.Http.RequestMethod.GET.value, httpHeaderList, emptyList(), ByteArray(0), null, timeout, null, advancedOption, callback)
     }
 
 
@@ -334,7 +334,7 @@ object HttpUtil {
      * @param callback
      */
     private fun sendRequestPost(httpUrl: String, httpHeaderList: List<HttpNameValue> = emptyList(), httpParameterList: List<HttpNameValue> = emptyList(), streamByteArray: ByteArray = ByteArray(0), inputStream: InputStream? = null, timeout: Int = DEFAULT_TIMEOUT, inputStreamProcessor: InputStreamProcessor? = null, advancedOption: AdvancedOption?, callback: Callback) {
-        sendRequest(httpUrl, Constants.Http.RequestMethod.POST, httpHeaderList, httpParameterList, streamByteArray, inputStream, timeout, inputStreamProcessor, advancedOption, callback)
+        sendRequest(httpUrl, Constants.Http.RequestMethod.POST.value, httpHeaderList, httpParameterList, streamByteArray, inputStream, timeout, inputStreamProcessor, advancedOption, callback)
     }
 
     /**
@@ -387,7 +387,7 @@ object HttpUtil {
                 }
             }
             httpUrlConnection.connect()
-            if (method.isNotBlank() && method.equals(Constants.Http.RequestMethod.POST, ignoreCase = true)) {
+            if (method.isNotBlank() && method.equals(Constants.Http.RequestMethod.POST.value, ignoreCase = true)) {
                 val outputStream = httpUrlConnection.getOutputStream()
                 outputStream.write(content.toString().toByteArray(Charsets.UTF_8))
                 if (streamByteArray.isNotEmpty()) {
