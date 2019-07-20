@@ -198,7 +198,7 @@ object JsonUtil {
      * @param ignoreFirstLetterCase
      * @return json string
      */
-    fun <T : Any> objectToJson(instance: T, fields: Array<String> = emptyArray(), jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
+    fun <T : Any> objectToJson(instance: T, fields: Array<String>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
         val objectJson = StringBuilder()
         val clazz = instance.javaClass.kotlin
         objectJson.append(Constants.Symbol.BIG_BRACKET_LEFT)
@@ -253,7 +253,7 @@ object JsonUtil {
      * @param ignoreFirstLetterCase
      * @return json
     </T> */
-    fun <T : Any> objectToJson(instance: T, fieldMap: Map<String, String> = mapOf(), jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
+    fun <T : Any> objectToJson(instance: T, fieldMap: Map<String, String>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
         val objectJson = StringBuilder()
         val clazz = instance.javaClass.kotlin
         val iterator = fieldMap.entries.iterator()
