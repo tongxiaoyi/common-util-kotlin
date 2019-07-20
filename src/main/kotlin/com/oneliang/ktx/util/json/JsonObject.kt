@@ -3,13 +3,8 @@ package com.oneliang.ktx.util.json
 import java.io.IOException
 import java.io.StringWriter
 import java.io.Writer
-import java.lang.reflect.Field
-import java.lang.reflect.Method
 import java.lang.reflect.Modifier
-import java.util.Enumeration
-import java.util.HashMap
-import java.util.Locale
-import java.util.ResourceBundle
+import java.util.*
 
 class JsonObject() {
     /**
@@ -31,18 +26,6 @@ class JsonObject() {
          */
         protected fun clone(): Any {
             return this
-        }
-
-        /**
-         * A Null object is equal to the null value and to itself.
-         *
-         * @param other
-         * An object to test for nullness.
-         * @return true if the object parameter is the JsonObject.NULL object or
-         * null.
-         */
-        override fun equals(other: Any?): Boolean {
-            return other == null || other == this
         }
 
         /**
