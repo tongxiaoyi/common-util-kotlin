@@ -12,7 +12,10 @@ class DefaultJsonProcessor : JsonUtil.JsonProcessor {
      * default json processor
      */
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> process(clazz: KClass<T>?, fieldName: String, value: Any, ignoreFirstLetterCase: Boolean): String {
+    override fun <T : Any> process(clazz: KClass<T>?, fieldName: String, value: Any?, ignoreFirstLetterCase: Boolean): String {
+        if (value == null) {
+            return Constants.String.NULL
+        }
         val result: String
         val valueKClazz = value.javaClass.kotlin
         if (valueKClazz.java.isArray) {
