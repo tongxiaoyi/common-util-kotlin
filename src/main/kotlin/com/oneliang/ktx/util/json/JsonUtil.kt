@@ -220,7 +220,7 @@ object JsonUtil {
                 val methodName = method.name
                 val fieldName = ObjectUtil.methodNameToFieldName(methodName, ignoreFirstLetterCase)
                 if (fieldName.isNotBlank()) {
-                    var value: Any
+                    var value: Any?
                     try {
                         value = method.invoke(instance)
                     } catch (e: Exception) {
