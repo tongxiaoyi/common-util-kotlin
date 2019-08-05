@@ -196,6 +196,7 @@ object Constants {
             const val CONTENT_DISPOSITION = "Content-Disposition"
             const val ACCEPT_CHARSET = "Accept-Charset"
             const val CONTENT_ENCODING = "Content-Encoding"
+            const val ACCESS_TOKEN = "Access-Token"
         }
 
         object ContentType {
