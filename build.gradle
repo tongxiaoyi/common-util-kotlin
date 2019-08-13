@@ -4,6 +4,7 @@ apply plugin: 'maven-publish'
 
 group = 'com.oneliang.ktx'
 version = '1.0'
+def artifactName = 'common-util-kotlin'
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
@@ -59,7 +60,7 @@ publishing {
         mavenJava(MavenPublication) {
             from components.java
             groupId = group
-            artifactId = project.getName()
+            artifactId = artifactName
             version = version
             artifact sourceJar {
                 classifier "sources"
