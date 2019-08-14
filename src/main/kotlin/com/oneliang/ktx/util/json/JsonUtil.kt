@@ -55,12 +55,43 @@ object JsonUtil {
         }
     }
 
+    fun jsonToArrayBoolean(json: String): Array<Boolean> {
+        val jsonArray = JsonArray(json)
+        return Array(jsonArray.length()) { index ->
+            jsonArray.optBoolean(index, false)
+        }
+    }
+
+    fun jsonToArrayInt(json: String): Array<Int> {
+        val jsonArray = JsonArray(json)
+        return Array(jsonArray.length()) { index ->
+            jsonArray.optInt(index, 0)
+        }
+    }
+
+    fun jsonToArrayLong(json: String): Array<Long> {
+        val jsonArray = JsonArray(json)
+        return Array(jsonArray.length()) { index ->
+            jsonArray.optLong(index, 0L)
+        }
+    }
+
+    fun jsonToArrayDouble(json: String): Array<Double> {
+        val jsonArray = JsonArray(json)
+        return Array(jsonArray.length()) { index ->
+            jsonArray.optDouble(index, 0.0)
+        }
+    }
+
+    fun jsonToArrayString(json: String): Array<String> {
+        val jsonArray = JsonArray(json)
+        return Array(jsonArray.length()) { index ->
+            jsonArray.optString(index, Constants.String.BLANK)
+        }
+    }
+
     /**
-     *
-     *
      * Method:simple array to json
-     *
-     *
      * @param <T>
      * @param array
      * @param jsonProcessor

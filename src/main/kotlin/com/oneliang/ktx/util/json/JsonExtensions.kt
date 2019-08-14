@@ -45,3 +45,13 @@ fun DoubleArray.toJson() = joinToString(prefix = Constants.Symbol.MIDDLE_BRACKET
 fun <T : Any> Iterable<T>.toJson(fields: Array<String> = emptyArray(), jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = JsonUtil.iterableToJson(this, fields, jsonProcessor)
 
 fun <T : Any> Iterable<T>.toJson(fieldMap: Map<String, String>, jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = JsonUtil.iterableToJson(this, fieldMap, jsonProcessor)
+
+fun String.jsonToArrayBoolean(): Array<Boolean> = JsonUtil.jsonToArrayBoolean(this)
+
+fun String.jsonToArrayInt(json: String): Array<Int> = JsonUtil.jsonToArrayInt(this)
+
+fun String.jsonToArrayLong(json: String): Array<Long> = JsonUtil.jsonToArrayLong(this)
+
+fun String.jsonToArrayDouble(json: String): Array<Double> = JsonUtil.jsonToArrayDouble(this)
+
+fun String.jsonToArrayString(json: String): Array<String> = JsonUtil.jsonToArrayString(this)

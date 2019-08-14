@@ -64,7 +64,6 @@ fun CharSequence.matchPattern(pattern: String): Boolean {
 /**
  *
  * Method:only for regex,parse regex group when regex include group
- * @param string
  * @param regex
  * @return List<String>
 </String> */
