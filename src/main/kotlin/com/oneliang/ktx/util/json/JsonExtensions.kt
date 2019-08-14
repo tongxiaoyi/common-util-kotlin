@@ -48,10 +48,10 @@ fun <T : Any> Iterable<T>.toJson(fieldMap: Map<String, String>, jsonProcessor: J
 
 fun String.jsonToArrayBoolean(): Array<Boolean> = JsonUtil.jsonToArrayBoolean(this)
 
-fun String.jsonToArrayInt(json: String): Array<Int> = JsonUtil.jsonToArrayInt(this)
+fun String.jsonToArrayInt(): Array<Int> = JsonUtil.jsonToArrayInt(this)
 
-fun String.jsonToArrayLong(json: String): Array<Long> = JsonUtil.jsonToArrayLong(this)
+fun String.jsonToArrayLong(): Array<Long> = JsonUtil.jsonToArrayLong(this)
 
-fun String.jsonToArrayDouble(json: String): Array<Double> = JsonUtil.jsonToArrayDouble(this)
+fun String.jsonToArrayDouble(): Array<Double> = JsonUtil.jsonToArrayDouble(this)
 
-fun String.jsonToArrayString(json: String): Array<String> = JsonUtil.jsonToArrayString(this)
+fun String.jsonToArrayString(): Array<String> = JsonUtil.jsonToArrayString(this)
