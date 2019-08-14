@@ -1,6 +1,8 @@
 package com.oneliang.ktx.util.json
 
 import com.oneliang.ktx.Constants
+import com.oneliang.ktx.util.common.KotlinClassUtil
+import kotlin.reflect.KClass
 
 fun Array<*>.toJson(jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = joinToString(prefix = Constants.Symbol.MIDDLE_BRACKET_LEFT, postfix = Constants.Symbol.MIDDLE_BRACKET_RIGHT, separator = Constants.Symbol.COMMA) {
     if (it != null) {
@@ -55,3 +57,5 @@ fun String.jsonToArrayLong(): Array<Long> = JsonUtil.jsonToArrayLong(this)
 fun String.jsonToArrayDouble(): Array<Double> = JsonUtil.jsonToArrayDouble(this)
 
 fun String.jsonToArrayString(): Array<String> = JsonUtil.jsonToArrayString(this)
+
+fun <T : Any> String.jsonToObject(clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = KotlinClassUtil.DEFAULT_KOTLIN_CLASS_PROCESSOR): T = JsonUtil.jsonToObject(this, clazz, classProcessor)
