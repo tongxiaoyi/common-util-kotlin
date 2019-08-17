@@ -168,8 +168,9 @@ object KotlinClassUtil {
      * @param classProcessor
      * @return Object
     </T> */
+    @Suppress("UNCHECKED_CAST")
     fun <T : Any> changeType(clazz: KClass<T>, values: Array<String>, fieldName: String = Constants.String.BLANK, classProcessor: KotlinClassProcessor = DEFAULT_KOTLIN_CLASS_PROCESSOR): T? {
-        return classProcessor.changeClassProcess(clazz, values, fieldName)
+        return classProcessor.changeClassProcess(clazz, values, fieldName) as T?
     }
 
     interface KotlinClassProcessor {
@@ -181,6 +182,6 @@ object KotlinClassUtil {
          * @param fieldName is null if not exist
          * @return Object
          */
-        fun <T : Any> changeClassProcess(clazz: KClass<T>, values: Array<String>, fieldName: String): T?
+        fun <T : Any> changeClassProcess(clazz: KClass<T>, values: Array<String>, fieldName: String): Any?
     }
 }
