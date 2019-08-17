@@ -6,7 +6,7 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-class DefaultFileCopyProcessor : FileCopyProcessor {
+open class DefaultFileCopyProcessor : FileCopyProcessor {
     /**
      * copyFileToFileProcess
      * @param from,maybe directory

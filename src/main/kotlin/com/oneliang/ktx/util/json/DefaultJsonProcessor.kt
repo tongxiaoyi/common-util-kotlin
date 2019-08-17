@@ -6,7 +6,7 @@ import com.oneliang.ktx.util.common.toFormatString
 import java.util.*
 import kotlin.reflect.KClass
 
-class DefaultJsonProcessor : JsonUtil.JsonProcessor {
+open class DefaultJsonProcessor : JsonUtil.JsonProcessor {
 
     /**
      * default json processor

@@ -3,7 +3,7 @@ package com.oneliang.ktx.util.common
 import com.oneliang.ktx.Constants
 import kotlin.reflect.KClass
 
-class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
+open class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
     companion object {
 
         //	private static final String ZERO=String.valueOf(0);
