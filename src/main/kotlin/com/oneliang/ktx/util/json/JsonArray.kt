@@ -4,7 +4,6 @@ import java.io.IOException
 import java.io.StringWriter
 import java.io.Writer
 import java.lang.reflect.Array
-import java.util.ArrayList
 
 class JsonArray() {
     /**
@@ -714,7 +713,7 @@ class JsonArray() {
      */
     override fun toString(): String {
         try {
-            return ('['.toInt() + this.join(",").toInt() + ']'.toInt()).toString()
+            return ('[' + this.join(",") + ']')
         } catch (e: Exception) {
             return super.toString()
         }
