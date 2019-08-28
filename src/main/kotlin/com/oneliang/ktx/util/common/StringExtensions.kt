@@ -1,8 +1,6 @@
 package com.oneliang.ktx.util.common
 
 import com.oneliang.ktx.Constants
-import java.text.SimpleDateFormat
-import java.util.*
 
 fun String.toIntSafely(defaultValue: Int = 0): Int = try {
     this.toInt()
@@ -107,9 +105,4 @@ fun String.fromUnicode(regex: String = UnicodeRegex.REGEX_ALL): String {
         tempResult = tempResult.replaceFirst(regex.toRegex(), group.toInt(radix = 16).toChar().toString())
     }
     return tempResult
-}
-
-fun String.toUtilDate(format: String = Constants.Time.YEAR_MONTH_DAY_HOUR_MINUTE_SECOND, locale: Locale = Locale.getDefault()): Date {
-    val simpleDateFormat = SimpleDateFormat(format, locale)
-    return simpleDateFormat.parse(this)
 }
