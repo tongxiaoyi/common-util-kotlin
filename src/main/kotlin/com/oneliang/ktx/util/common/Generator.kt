@@ -16,6 +16,11 @@ object Generator {
             return 0
         }
     }
+    private val sequenceCountThreadLocal = object : ThreadLocal<Int>() {
+        override fun initialValue(): Int {
+            return 0
+        }
+    }
 
     /**
      * the union id generator
@@ -32,6 +37,22 @@ object Generator {
             count = 0
         }
         countThreadLocal.set(count)
+        return result
+    }
+
+    /**
+     * generate sequence
+     * rule:current time millis * 1000 + sequence count
+     */
+    fun generateSequence(): Long {
+        var sequenceCount = sequenceCountThreadLocal.get()
+        val timeMillis = System.currentTimeMillis()
+        val result = timeMillis * 1000 + sequenceCount
+        sequenceCount++
+        if (sequenceCount > COUNT_MAX_VALUE) {
+            sequenceCount = 0
+        }
+        sequenceCountThreadLocal.set(sequenceCount)
         return result
     }
 
