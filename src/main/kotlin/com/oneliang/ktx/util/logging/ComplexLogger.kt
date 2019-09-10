@@ -7,7 +7,9 @@ class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLo
      */
     override fun log(level: Logger.Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
         for (logger in this.loggerList) {
-            logger.log(level, message, throwable, extraInfo)
+            if (level.ordinal >= logger.level.ordinal) {
+                logger.log(level, message, throwable, extraInfo)
+            }
         }
     }
 

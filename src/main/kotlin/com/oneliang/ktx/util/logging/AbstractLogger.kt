@@ -9,7 +9,7 @@ import com.oneliang.ktx.util.logging.Logger.Level
  *
  * @param level
  */
-abstract class AbstractLogger(private val level: Level) : Logger {
+abstract class AbstractLogger(val level: Level) : Logger {
 
     /**
      * verbose
