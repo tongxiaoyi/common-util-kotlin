@@ -330,4 +330,9 @@ object Constants {
         const val HTTP = "http://"
         const val FTP = "ftp://"
     }
+
+    object Language {
+        const val ZH_CN = "zh_CN"
+        const val ENGLISH = "en"
+    }
 }
