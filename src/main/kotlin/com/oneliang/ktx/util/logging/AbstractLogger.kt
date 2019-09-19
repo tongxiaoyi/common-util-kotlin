@@ -1,6 +1,7 @@
 package com.oneliang.ktx.util.logging
 
 import com.oneliang.ktx.Constants
+import com.oneliang.ktx.util.common.nullToBlank
 import com.oneliang.ktx.util.logging.Logger.Level
 
 
@@ -91,7 +92,7 @@ abstract class AbstractLogger(val level: Level) : Logger {
                 extraInfo.className = stackTrace.className
                 extraInfo.methodName = stackTrace.methodName
                 extraInfo.lineNumber = stackTrace.lineNumber
-                extraInfo.filename = stackTrace.fileName
+                extraInfo.filename = stackTrace.fileName.nullToBlank()
             }
             log(level, message, throwable, extraInfo)
         }
