@@ -89,6 +89,7 @@ abstract class AbstractLogger(val level: Level) : Logger {
             val stackTraceArray = Thread.currentThread().stackTrace
             if (stackTraceArray.size > 4) {
                 val stackTrace = stackTraceArray[4]
+                extraInfo.threadName = Thread.currentThread().name
                 extraInfo.className = stackTrace.className
                 extraInfo.methodName = stackTrace.methodName
                 extraInfo.lineNumber = stackTrace.lineNumber
@@ -108,6 +109,7 @@ abstract class AbstractLogger(val level: Level) : Logger {
     abstract fun log(level: Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo)
 
     class ExtraInfo {
+        var threadName = Constants.String.BLANK
         var className = Constants.String.BLANK
         var methodName = Constants.String.BLANK
         var lineNumber = 0

@@ -1,11 +1,37 @@
 package com.oneliang.ktx.util.logging
 
-class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLogger>) : AbstractLogger(level) {
+import com.oneliang.ktx.util.concurrent.ResourceQueueThread
+
+class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLogger>, private val async: Boolean = false) : AbstractLogger(level) {
+
+    private var logQueueThread: ResourceQueueThread<LogMessage>? = null
+
+    init {
+        if (this.async) {
+            this.logQueueThread = ResourceQueueThread(object : ResourceQueueThread.ResourceProcessor<LogMessage> {
+                override fun process(resource: LogMessage) {
+                    realLog(resource.level, resource.message, resource.throwable, resource.extraInfo)
+                }
+            })
+            this.logQueueThread?.start()
+        }
+    }
 
     /**
-     * log
+     * real log
      */
     override fun log(level: Logger.Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
+        if (async) {
+            this.logQueueThread?.addResource(LogMessage(level, message, throwable, extraInfo))
+        } else {
+            this.realLog(level, message, throwable, extraInfo)
+        }
+    }
+
+    /**
+     * real log
+     */
+    private fun realLog(level: Logger.Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
         for (logger in this.loggerList) {
             if (level.ordinal >= logger.level.ordinal) {
                 logger.log(level, message, throwable, extraInfo)
@@ -17,5 +43,8 @@ class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLo
         for (logger in this.loggerList) {
             logger.destroy()
         }
+        this.logQueueThread?.interrupt()
     }
+
+    private class LogMessage(val level: Logger.Level, val message: Any, val throwable: Throwable?, val extraInfo: ExtraInfo)
 }
