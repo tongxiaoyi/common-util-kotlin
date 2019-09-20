@@ -3,13 +3,15 @@ package com.oneliang.ktx.util.jar
 import com.oneliang.ktx.Constants
 import com.oneliang.ktx.exception.FileLoadException
 import java.io.FileInputStream
-import java.io.IOException
 import java.net.URL
+import java.util.concurrent.ConcurrentHashMap
 import java.util.jar.JarEntry
 import java.util.jar.JarInputStream
 import kotlin.reflect.KClass
 
 object JarUtil {
+
+    private val jarClassCacheMap = ConcurrentHashMap<String, List<KClass<*>>>()
 
     /**
      * extract from jar file
@@ -20,24 +22,11 @@ object JarUtil {
     @Throws(FileLoadException::class)
     fun extractFromJarFile(jarFileRealPath: String): List<JarEntry> {
         val jarEntryList = mutableListOf<JarEntry>()
-        var jarInputStream: JarInputStream? = null
-        try {
-            jarInputStream = JarInputStream(FileInputStream(jarFileRealPath))
+        JarInputStream(FileInputStream(jarFileRealPath)).use { jarInputStream ->
             var jarEntry: JarEntry? = jarInputStream.nextJarEntry
             while (jarEntry != null) {
                 jarEntryList.add(jarEntry)
                 jarEntry = jarInputStream.nextJarEntry
-            }
-        } catch (e: Exception) {
-            throw FileLoadException(e)
-        } finally {
-            if (jarInputStream != null) {
-                try {
-                    jarInputStream.close()
-                } catch (e: IOException) {
-                    throw FileLoadException(e)
-                }
-
             }
         }
         return jarEntryList
@@ -73,14 +62,19 @@ object JarUtil {
      */
     @Throws(FileLoadException::class)
     fun extractClassFromJarFile(jarClassLoader: JarClassLoader, jarFileRealPath: String, packageName: String = Constants.String.BLANK): List<KClass<*>> {
+        val jarClassCacheKey = generateJarClassCacheKey(jarClassLoader, jarFileRealPath, packageName)
+        if (this.jarClassCacheMap.containsKey(jarClassCacheKey)) {
+            val classList = jarClassCacheMap[jarClassCacheKey]
+            if (classList != null) {
+                return classList
+            }
+        }
         val classList = mutableListOf<KClass<*>>()
         if (jarFileRealPath.isBlank()) {
             return classList
         }
-        var jarInputStream: JarInputStream? = null
-        try {
-            jarClassLoader.addURL(URL(Constants.Protocol.FILE + jarFileRealPath))
-            jarInputStream = JarInputStream(FileInputStream(jarFileRealPath))
+        jarClassLoader.addURL(URL(Constants.Protocol.FILE + jarFileRealPath))
+        JarInputStream(FileInputStream(jarFileRealPath)).use { jarInputStream ->
             var jarEntry: JarEntry? = jarInputStream.nextJarEntry
             while (jarEntry != null) {
                 var entryName = jarEntry.name
@@ -102,15 +96,12 @@ object JarUtil {
                 }
                 jarEntry = jarInputStream.nextJarEntry
             }
-        } catch (e: Exception) {
-            throw FileLoadException(e)
-        } finally {
-            try {
-                jarInputStream?.close()
-            } catch (e: IOException) {
-                throw FileLoadException(e)
-            }
         }
+        this.jarClassCacheMap[jarClassCacheKey] = classList
         return classList
+    }
+
+    private fun generateJarClassCacheKey(jarClassLoader: JarClassLoader, jarFileRealPath: String, packageName: String): String {
+        return jarClassLoader.toString() + Constants.Symbol.COMMA + jarFileRealPath + Constants.Symbol.COMMA + packageName
     }
 }
