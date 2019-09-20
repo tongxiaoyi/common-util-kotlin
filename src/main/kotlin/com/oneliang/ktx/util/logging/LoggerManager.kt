@@ -2,7 +2,7 @@ package com.oneliang.ktx.util.logging
 
 import com.oneliang.ktx.util.common.matchPattern
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentSkipListSet
+import java.util.concurrent.CopyOnWriteArraySet
 import kotlin.reflect.KClass
 
 /**
@@ -12,7 +12,7 @@ object LoggerManager {
     private val DEFAULT_LOGGER = BaseLogger(Logger.Level.ERROR)
     private val loggerMap = ConcurrentHashMap<KClass<*>, Logger>()
     private val patternLoggerMap = ConcurrentHashMap<String, Logger>()
-    private val loggerPatternSet = ConcurrentSkipListSet<String>()
+    private val loggerPatternSet = CopyOnWriteArraySet<String>()
     /**
      * get logger
      *
