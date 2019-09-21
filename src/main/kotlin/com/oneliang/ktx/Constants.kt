@@ -197,6 +197,8 @@ object Constants {
             const val ACCEPT_CHARSET = "Accept-Charset"
             const val CONTENT_ENCODING = "Content-Encoding"
             const val ACCESS_TOKEN = "Access-Token"
+            const val ACCESS_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin"
+            const val ORIGIN = "Origin"
         }
 
         object ContentType {
