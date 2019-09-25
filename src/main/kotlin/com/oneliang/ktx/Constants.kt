@@ -89,6 +89,10 @@ object Constants {
          */
         const val AT = "@"
         /**
+         * plus "+"
+         */
+        const val PLUS = "+"
+        /**
          * minus "-"
          */
         const val MINUS = "-"
