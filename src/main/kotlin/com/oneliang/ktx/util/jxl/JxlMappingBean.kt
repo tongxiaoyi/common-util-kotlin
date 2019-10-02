@@ -1,5 +1,6 @@
 package com.oneliang.ktx.util.jxl
 
+import com.oneliang.ktx.Constants
 import java.util.concurrent.CopyOnWriteArrayList
 
 class JxlMappingBean {
@@ -21,7 +22,7 @@ class JxlMappingBean {
     /**
      * @param type the type to set
      */
-    var type: String? = null
+    var type: String = Constants.String.BLANK
     val jxlMappingColumnBeanList = CopyOnWriteArrayList<JxlMappingColumnBean>()
 
     /**
