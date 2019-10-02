@@ -12,51 +12,58 @@ interface Logger {
      * verbose
      *
      * @param message
+     * @param args
      */
-    fun verbose(message: Any)
+    fun verbose(message: String, vararg args: Any)
 
     /**
      * debug
      *
      * @param message
+     * @param args
      */
-    fun debug(message: Any)
+    fun debug(message: String, vararg args: Any)
 
     /**
      * info
      *
      * @param message
+     * @param args
      */
-    fun info(message: Any)
+    fun info(message: String, vararg args: Any)
 
     /**
      * warning
      *
      * @param message
+     * @param args
      */
-    fun warning(message: Any)
+    fun warning(message: String, vararg args: Any)
 
     /**
      * error
      *
      * @param message
+     * @param args
      */
-    fun error(message: Any)
+    fun error(message: String, vararg args: Any)
 
     /**
      * error
      *
      * @param message
      * @param throwable
+     * @param args
      */
-    fun error(message: Any, throwable: Throwable)
+    fun error(message: String, throwable: Throwable, vararg args: Any)
 
     /**
      * fatal
      *
      * @param message
+     * @param args
      */
-    fun fatal(message: Any)
+    fun fatal(message: String, vararg args: Any)
 
     /**
      * destroy

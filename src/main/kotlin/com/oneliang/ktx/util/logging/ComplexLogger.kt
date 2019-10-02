@@ -20,7 +20,7 @@ class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLo
     /**
      * real log
      */
-    override fun log(level: Logger.Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
+    override fun log(level: Logger.Level, message: String, throwable: Throwable?, extraInfo: ExtraInfo) {
         if (async) {
             this.logQueueThread?.addResource(LogMessage(level, message, throwable, extraInfo))
         } else {
@@ -31,7 +31,7 @@ class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLo
     /**
      * real log
      */
-    private fun realLog(level: Logger.Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
+    private fun realLog(level: Logger.Level, message: String, throwable: Throwable?, extraInfo: ExtraInfo) {
         for (logger in this.loggerList) {
             if (level.ordinal >= logger.level.ordinal) {
                 logger.log(level, message, throwable, extraInfo)
@@ -46,5 +46,5 @@ class ComplexLogger(level: Logger.Level, private val loggerList: List<AbstractLo
         this.logQueueThread?.interrupt()
     }
 
-    private class LogMessage(val level: Logger.Level, val message: Any, val throwable: Throwable?, val extraInfo: ExtraInfo)
+    private class LogMessage(val level: Logger.Level, val message: String, val throwable: Throwable?, val extraInfo: ExtraInfo)
 }

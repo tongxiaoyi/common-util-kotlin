@@ -16,45 +16,50 @@ abstract class AbstractLogger(val level: Level) : Logger {
      * verbose
      *
      * @param message
+     * @param args
      */
-    override fun verbose(message: Any) {
-        logByLevel(Level.VERBOSE, message)
+    override fun verbose(message: String, vararg args: Any) {
+        logByLevel(Level.VERBOSE, message, args = *args)
     }
 
     /**
      * debug
      *
      * @param message
+     * @param args
      */
-    override fun debug(message: Any) {
-        logByLevel(Level.DEBUG, message)
+    override fun debug(message: String, vararg args: Any) {
+        logByLevel(Level.DEBUG, message, args = *args)
     }
 
     /**
      * info
      *
      * @param message
+     * @param args
      */
-    override fun info(message: Any) {
-        logByLevel(Level.INFO, message)
+    override fun info(message: String, vararg args: Any) {
+        logByLevel(Level.INFO, message, args = *args)
     }
 
     /**
      * warning
      *
      * @param message
+     * @param args
      */
-    override fun warning(message: Any) {
-        logByLevel(Level.WARNING, message)
+    override fun warning(message: String, vararg args: Any) {
+        logByLevel(Level.WARNING, message, args = *args)
     }
 
     /**
      * error
      *
      * @param message
+     * @param args
      */
-    override fun error(message: Any) {
-        logByLevel(Level.ERROR, message, null)
+    override fun error(message: String, vararg args: Any) {
+        logByLevel(Level.ERROR, message, args = *args)
     }
 
     /**
@@ -62,18 +67,20 @@ abstract class AbstractLogger(val level: Level) : Logger {
      *
      * @param message
      * @param throwable
+     * @param args
      */
-    override fun error(message: Any, throwable: Throwable) {
-        logByLevel(Level.ERROR, message, throwable)
+    override fun error(message: String, throwable: Throwable, vararg args: Any) {
+        logByLevel(Level.ERROR, message, throwable, args = *args)
     }
 
     /**
      * fatal
      *
      * @param message
+     * @param args
      */
-    override fun fatal(message: Any) {
-        logByLevel(Level.FATAL, message)
+    override fun fatal(message: String, vararg args: Any) {
+        logByLevel(Level.FATAL, message, args = *args)
     }
 
     /**
@@ -82,8 +89,9 @@ abstract class AbstractLogger(val level: Level) : Logger {
      * @param level
      * @param message
      * @param throwable
+     * @param args
      */
-    private fun logByLevel(level: Level, message: Any, throwable: Throwable? = null) {
+    private fun logByLevel(level: Level, message: String, throwable: Throwable? = null, vararg args: Any) {
         if (level.ordinal >= this.level.ordinal) {
             val extraInfo = ExtraInfo()
             val stackTraceArray = Thread.currentThread().stackTrace
@@ -95,7 +103,7 @@ abstract class AbstractLogger(val level: Level) : Logger {
                 extraInfo.lineNumber = stackTrace.lineNumber
                 extraInfo.filename = stackTrace.fileName.nullToBlank()
             }
-            log(level, message, throwable, extraInfo)
+            log(level, message.format(args), throwable, extraInfo)
         }
     }
 
@@ -105,8 +113,9 @@ abstract class AbstractLogger(val level: Level) : Logger {
      * @param level
      * @param message
      * @param throwable
+     * @param extraInfo
      */
-    abstract fun log(level: Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo)
+    abstract fun log(level: Level, message: String, throwable: Throwable?, extraInfo: ExtraInfo)
 
     class ExtraInfo {
         var threadName = Constants.String.BLANK

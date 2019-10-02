@@ -4,7 +4,7 @@ import com.oneliang.ktx.Constants
 import com.oneliang.ktx.util.common.toFormatString
 import java.util.*
 
-internal fun Logger.generateLogContent(level: Logger.Level, message: Any, throwable: Throwable?, extraInfo: AbstractLogger.ExtraInfo): String {
+internal fun Logger.generateLogContent(level: Logger.Level, message: String, throwable: Throwable?, extraInfo: AbstractLogger.ExtraInfo): String {
     val stringBuilder = StringBuilder()
     stringBuilder.append(Constants.Symbol.MIDDLE_BRACKET_LEFT)
     stringBuilder.append(Date().toFormatString(Constants.Time.YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND))

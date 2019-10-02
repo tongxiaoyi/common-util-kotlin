@@ -17,14 +17,14 @@ class FileLogger(level: Level, outputFile: File) : BaseLogger(level) {
         }
     }
 
-    override fun log(level: Level, message: Any, throwable: Throwable?, extraInfo: ExtraInfo) {
+    override fun log(level: Level, message: String, throwable: Throwable?, extraInfo: ExtraInfo) {
         val messageString = this.generateLogContent(level, message, throwable, extraInfo) + Constants.String.CRLF_STRING
         try {
-            this.fileOutputStream?.write(messageString.toByteArray())
-            if (throwable != null) {
-                throwable.printStackTrace(PrintStream(this.fileOutputStream))
+            this.fileOutputStream?.use {
+                it.write(messageString.toByteArray())
+                throwable?.printStackTrace(PrintStream(it))
+                it.flush()
             }
-            this.fileOutputStream?.flush()
         } catch (e: IOException) {
             e.printStackTrace()
         }
