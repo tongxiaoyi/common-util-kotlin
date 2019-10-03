@@ -20,10 +20,11 @@ class FileLogger(level: Level, outputFile: File) : BaseLogger(level) {
     override fun log(level: Level, message: String, throwable: Throwable?, extraInfo: ExtraInfo) {
         val messageString = this.generateLogContent(level, message, throwable, extraInfo) + Constants.String.CRLF_STRING
         try {
-            this.fileOutputStream?.use {
-                it.write(messageString.toByteArray())
-                throwable?.printStackTrace(PrintStream(it))
-                it.flush()
+            val fileOutputStream = this.fileOutputStream
+            if (fileOutputStream != null) {
+                fileOutputStream.write(messageString.toByteArray())
+                throwable?.printStackTrace(PrintStream(fileOutputStream))
+                fileOutputStream.flush()
             }
         } catch (e: IOException) {
             e.printStackTrace()
