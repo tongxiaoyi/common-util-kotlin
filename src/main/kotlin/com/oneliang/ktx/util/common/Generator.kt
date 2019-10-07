@@ -11,6 +11,7 @@ object Generator {
     private const val FONT_FAMILY_TIMES_NEW_ROMAN = "Times New Roman"
     private const val COUNT_MAX_LENGTH = 3
     private const val COUNT_MAX_VALUE = 999
+    private const val THREAD_ID_MAX_VALUE = 9999
     private val countThreadLocal = object : ThreadLocal<Int>() {
         override fun initialValue(): Int {
             return 0
@@ -29,13 +30,21 @@ object Generator {
      */
     fun ID(): String {
         var count = countThreadLocal.get()
-        val threadId = Thread.currentThread().id
-        val timeMillis = System.currentTimeMillis()
-        val result = timeMillis.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH + 1 - threadId.toString().length) + threadId.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH - count.toString().length) + count.toString()
-        count++
-        if (count > COUNT_MAX_VALUE) {
+        val fixCount = if (count > COUNT_MAX_VALUE) {
             count = 0
+            count
+        } else {
+            count
         }
+        val threadId = Thread.currentThread().id
+        val fixThreadId = if (threadId > THREAD_ID_MAX_VALUE) {
+            threadId % THREAD_ID_MAX_VALUE
+        } else {
+            threadId
+        }
+        val timeMillis = System.currentTimeMillis()
+        val result = timeMillis.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH + 1 - fixThreadId.toString().length) + fixThreadId.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH - fixCount.toString().length) + fixCount.toString()
+        count++
         countThreadLocal.set(count)
         return result
     }
