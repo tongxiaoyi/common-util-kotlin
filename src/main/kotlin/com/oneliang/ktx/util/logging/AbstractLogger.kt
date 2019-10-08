@@ -103,7 +103,11 @@ abstract class AbstractLogger(val level: Level) : Logger {
                 extraInfo.lineNumber = stackTrace.lineNumber
                 extraInfo.filename = stackTrace.fileName.nullToBlank()
             }
-            log(level, message.format(args), throwable, extraInfo)
+            if (args.isEmpty()) {
+                log(level, message, throwable, extraInfo)
+            } else {
+                log(level, message.format(args), throwable, extraInfo)
+            }
         }
     }
 
