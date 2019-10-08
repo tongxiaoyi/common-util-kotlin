@@ -357,7 +357,7 @@ object HttpUtil {
             var proxy = Proxy.NO_PROXY
             if (advancedOption != null && advancedOption.proxyHostname.isNotBlank() && advancedOption.proxyPort > 0) {
                 val inetSocketAddress = InetSocketAddress(advancedOption.proxyHostname, advancedOption.proxyPort)
-                proxy = Proxy(Proxy.Type.HTTP, inetSocketAddress)
+                proxy = Proxy(advancedOption.proxyType, inetSocketAddress)
             }
             val httpUrlConnection = url.openConnection(proxy) as HttpURLConnection
             httpUrlConnection.doOutput = true
@@ -479,6 +479,7 @@ object HttpUtil {
     class HttpNameValue(var name: String, var value: String)
 
     class AdvancedOption {
+        var proxyType = Proxy.Type.HTTP
         var proxyHostname: String = Constants.String.BLANK
         var proxyPort = 0
     }
