@@ -54,8 +54,7 @@ open class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
             KotlinClassUtil.ClassType.JAVA_UTIL_DATE -> value = if (values.isEmpty() || values[0].isBlank()) {
                 null
             } else {
-                val valueLength = values[0].length
-                when (valueLength) {
+                when (values[0].length) {
                     DATE_LENGTH -> values[0].toUtilDate(Constants.Time.YEAR_MONTH_DAY)
                     DATE_TIME_LENGTH -> values[0].toUtilDate()
                     else -> null

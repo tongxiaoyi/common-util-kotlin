@@ -9,7 +9,7 @@ import kotlin.reflect.KClass
 object JsonUtil {
 
     val DEFAULT_JSON_PROCESSOR: JsonProcessor = DefaultJsonProcessor()
-    private val DEFAULT_KOTLIN_CLASS_PROCESSOR = KotlinClassUtil.DEFAULT_KOTLIN_CLASS_PROCESSOR
+    val DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR = DefaultJsonKotlinClassProcessor()
 
     /**
      *
@@ -313,7 +313,7 @@ object JsonUtil {
      * @param ignoreFirstLetterCase
      * @return T
      */
-    fun <T : Any> jsonObjectToObject(jsonObject: JsonObject, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
+    fun <T : Any> jsonObjectToObject(jsonObject: JsonObject, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
         val instance: T
         val methods = clazz.java.methods
         try {
@@ -336,10 +336,10 @@ object JsonUtil {
                     if (jsonObject.has(fieldName)) {
                         try {
                             if (KotlinClassUtil.isSimpleClass(objectClass)) {
-                                if (!jsonObject.isNull(fieldName)) {
-                                    value = KotlinClassUtil.changeType(objectClass, arrayOf(jsonObject.get(fieldName).toString()), fieldName, classProcessor)
+                                value = if (!jsonObject.isNull(fieldName)) {
+                                    KotlinClassUtil.changeType(objectClass, arrayOf(jsonObject.get(fieldName).toString()), fieldName, classProcessor)
                                 } else {
-                                    value = KotlinClassUtil.changeType(objectClass, emptyArray(), fieldName, classProcessor)
+                                    KotlinClassUtil.changeType(objectClass, emptyArray(), fieldName, classProcessor)
                                 }
                             } else if (KotlinClassUtil.isBaseArray(objectClass) || KotlinClassUtil.isSimpleArray(objectClass)) {
                                 if (!jsonObject.isNull(fieldName)) {
@@ -397,7 +397,7 @@ object JsonUtil {
      * @param ignoreFirstLetterCase
      * @return List<T>
     </T></T> */
-    fun <T : Any> jsonArrayToList(jsonArray: JsonArray, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
+    fun <T : Any> jsonArrayToList(jsonArray: JsonArray, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
         val length = jsonArray.length()
         val list = mutableListOf<T>()
         for (i in 0 until length) {
@@ -418,7 +418,7 @@ object JsonUtil {
      * @param ignoreFirstLetterCase
      * @return T
      */
-    fun <T : Any> jsonToObject(json: String, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
+    fun <T : Any> jsonToObject(json: String, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
         val jsonObject = JsonObject(json)
         return jsonObjectToObject(jsonObject, clazz, classProcessor, ignoreFirstLetterCase)
     }
@@ -432,7 +432,7 @@ object JsonUtil {
      * @param ignoreFirstLetterCase
      * @return List<T>
     </T> */
-    fun <T : Any> jsonToObjectList(json: String, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
+    fun <T : Any> jsonToObjectList(json: String, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
         val jsonArray = JsonArray(json)
         return jsonArrayToList(jsonArray, clazz, classProcessor, ignoreFirstLetterCase)
     }
