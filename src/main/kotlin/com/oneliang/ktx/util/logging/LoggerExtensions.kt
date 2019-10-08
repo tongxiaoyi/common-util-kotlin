@@ -15,7 +15,7 @@ internal fun Logger.generateLogContent(level: Logger.Level, message: String, thr
     stringBuilder.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT)
     stringBuilder.append(Constants.String.SPACE)
     stringBuilder.append(Constants.Symbol.MIDDLE_BRACKET_LEFT)
-    stringBuilder.append(extraInfo.threadName)
+    stringBuilder.append(extraInfo.threadName + Constants.Symbol.COMMA + extraInfo.threadId)
     stringBuilder.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT)
     stringBuilder.append(Constants.String.SPACE)
     stringBuilder.append(Constants.Symbol.MIDDLE_BRACKET_LEFT)
