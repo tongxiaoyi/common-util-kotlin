@@ -4,7 +4,7 @@ import com.oneliang.ktx.util.common.DefaultKotlinClassProcessor
 import com.oneliang.ktx.util.common.KotlinClassUtil
 import kotlin.reflect.KClass
 
-class DefaultJsonKotlinClassProcessor : DefaultKotlinClassProcessor() {
+open class DefaultJsonKotlinClassProcessor : DefaultKotlinClassProcessor() {
     override fun <T : Any> changeClassProcess(clazz: KClass<T>, values: Array<String>, fieldName: String): Any? {
         val classType = KotlinClassUtil.getClassType(clazz)
         return if (classType != null) {
