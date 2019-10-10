@@ -22,7 +22,7 @@ class ResourceQueueThread<T : Any>(private val resourceProcessor: ResourceProces
     // always binding in self instance(ResourceQueueThread),finalize self
 // instance will set null(release the resourceProcessor)
     private var needToInterrupt = false
-    private val lock = java.lang.Object()
+    private val lock = Object()
 
     override fun run() {
         while (!Thread.currentThread().isInterrupted) {

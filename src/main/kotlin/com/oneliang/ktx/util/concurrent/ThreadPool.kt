@@ -32,7 +32,7 @@ class ThreadPool : Runnable {
     private var daemonThread: DaemonThread? = null
     private var thread: Thread? = null
     private var processor: Processor? = null
-    private val lock = java.lang.Object()
+    private val lock = Object()
 
     private fun initialPool() {
         this.daemonThread = DaemonThread()
@@ -174,7 +174,7 @@ class ThreadPool : Runnable {
         private var beginTimeMillis: Long = 0
         private var finishedTimeMillis: Long = 0
         private var currentThreadTask: ThreadTask? = null
-        private val lock = java.lang.Object()
+        private val lock = Object()
         /**
          * @return the finishedCount
          */
@@ -295,7 +295,7 @@ class ThreadPool : Runnable {
 
         private val innerThreadQueue = ConcurrentLinkedQueue<InnerThread>()
         private var thread: Thread? = null
-        private val lock = java.lang.Object()
+        private val lock = Object()
 
         /**
          * start
