@@ -108,7 +108,7 @@ abstract class AbstractLogger(val level: Level) : Logger {
             if (args.isEmpty()) {
                 log(level, message, throwable, extraInfo)
             } else {
-                log(level, message.format(args), throwable, extraInfo)
+                log(level, message.format(*args), throwable, extraInfo)
             }
         }
     }
