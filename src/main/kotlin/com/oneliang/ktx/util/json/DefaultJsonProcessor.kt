@@ -37,10 +37,10 @@ open class DefaultJsonProcessor : JsonUtil.JsonProcessor {
         } else if (valueKClazz == Date::class) {
             result = Constants.Symbol.DOUBLE_QUOTES + (value as Date).toFormatString() + Constants.Symbol.DOUBLE_QUOTES
         } else {
-            result = if (value is Iterable<*>) {
-                JsonUtil.iterableToJson(value as Iterable<Any>, emptyArray(), this, ignoreFirstLetterCase)
-            } else {
-                JsonUtil.objectToJson(value, emptyArray(), this, ignoreFirstLetterCase)
+            result = when (value) {
+                is Iterable<*> -> JsonUtil.iterableToJson(value as Iterable<Any>, this, ignoreFirstLetterCase)
+                is Map<*, *> -> JsonUtil.mapToJson(value as Map<Any, Any>, this, ignoreFirstLetterCase)
+                else -> JsonUtil.objectToJson(value, emptyArray(), this, ignoreFirstLetterCase)
             }
         }
         return result

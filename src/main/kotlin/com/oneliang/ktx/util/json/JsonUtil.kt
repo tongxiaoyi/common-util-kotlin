@@ -12,11 +12,7 @@ object JsonUtil {
     val DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR = DefaultJsonKotlinClassProcessor()
 
     /**
-     *
-     *
      * Method:basic array to json
-     *
-     *
      * @param object
      * @return String
      */
@@ -102,11 +98,7 @@ object JsonUtil {
     }
 
     /**
-     *
-     *
      * Method:object array to json
-     *
-     *
      * @param <T>
      * @param array
      * @param fields
@@ -130,12 +122,8 @@ object JsonUtil {
     }
 
     /**
-     *
-     *
      * Method:object array to json array,key means json's properties,value means
      * object field
-     *
-     *
      * @param <T>
      * @param array
      * @param fieldMap
@@ -161,25 +149,20 @@ object JsonUtil {
     }
 
     /**
-     *
-     *
      * Method: iterable to json
-     *
-     *
      * @param <T>
      * @param iterable
-     * @param fields
      * @param jsonProcessor
      * @param ignoreFirstLetterCase
      * @return String
     </T> */
-    fun <T : Any> iterableToJson(iterable: Iterable<T>, fields: Array<String> = emptyArray(), jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
+    fun <T : Any> iterableToJson(iterable: Iterable<T>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
         val string = StringBuilder()
         string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT)
         val iterator = iterable.iterator()
         while (iterator.hasNext()) {
             val instance = iterator.next()
-            string.append(objectToJson(instance, fields, jsonProcessor, ignoreFirstLetterCase))
+            string.append(jsonProcessor.process(instance::class, Constants.String.BLANK, instance, ignoreFirstLetterCase))
             if (iterator.hasNext()) {
                 string.append(Constants.Symbol.COMMA)
             }
@@ -188,41 +171,25 @@ object JsonUtil {
         return string.toString()
     }
 
-    /**
-     *
-     *
-     * Method:iterable to json with field map,key means json's properties,value
-     * means object field
-     *
-     *
-     * @param <T>
-     * @param iterable
-     * @param fieldMap
-     * @param jsonProcessor
-     * @param ignoreFirstLetterCase
-     * @return json
-    </T> */
-    fun <T : Any> iterableToJson(iterable: Iterable<T>, fieldMap: Map<String, String>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
+    fun <K : Any, V : Any> mapToJson(map: Map<K, V>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
         val string = StringBuilder()
-        string.append(Constants.Symbol.MIDDLE_BRACKET_LEFT)
-        val iterator = iterable.iterator()
-        while (iterator.hasNext()) {
-            val instance = iterator.next()
-            string.append(objectToJson(instance, fieldMap, jsonProcessor, ignoreFirstLetterCase))
-            if (iterator.hasNext()) {
-                string.append(Constants.Symbol.COMMA)
-            }
+        string.append(Constants.Symbol.BIG_BRACKET_LEFT)
+        val subString = StringBuilder()
+        map.forEach { (key, instance) ->
+            val value = jsonProcessor.process(instance::class, key.toString(), instance, ignoreFirstLetterCase)
+            subString.append(Constants.Symbol.DOUBLE_QUOTES + key.toString() + Constants.Symbol.DOUBLE_QUOTES + Constants.Symbol.COLON + value.toString() + Constants.Symbol.COMMA)
+            subString.append(Constants.Symbol.COMMA)
         }
-        string.append(Constants.Symbol.MIDDLE_BRACKET_RIGHT)
+        if (subString.isNotEmpty()) {
+            subString.delete(subString.length - 1, subString.length)
+            string.append(subString.toString())
+        }
+        string.append(Constants.Symbol.BIG_BRACKET_RIGHT)
         return string.toString()
     }
 
     /**
-     *
-     *
      * Method: object to json string
-     *
-     *
      * @param instance
      * @param fields
      * @param jsonProcessor
@@ -271,12 +238,8 @@ object JsonUtil {
     }
 
     /**
-     *
-     *
      * Method:object to json with field map,key means json's properties,value
      * means object field
-     *
-     *
      * @param <T>
      * @param object
      * @param fieldMap
@@ -306,7 +269,6 @@ object JsonUtil {
 
     /**
      * jsonObject to object
-     *
      * @param jsonObject
      * @param clazz
      * @param classProcessor
@@ -371,7 +333,6 @@ object JsonUtil {
 
     /**
      * jsonArray to array,just include base array and simple array
-     *
      * @param jsonArray
      * @param clazz
      * @param fieldName
@@ -389,7 +350,6 @@ object JsonUtil {
 
     /**
      * jsonArray to list
-     *
      * @param <T>
      * @param jsonArray
      * @param clazz
@@ -411,7 +371,6 @@ object JsonUtil {
 
     /**
      * json to object
-     *
      * @param json
      * @param clazz
      * @param classProcessor
@@ -425,7 +384,6 @@ object JsonUtil {
 
     /**
      * json to object list
-     *
      * @param json
      * @param clazz
      * @param classProcessor
@@ -443,7 +401,6 @@ object JsonUtil {
 
         /**
          * process
-         *
          * @param <T>
          * @param clazz
          * @param fieldName

@@ -44,9 +44,7 @@ fun DoubleArray.toJson() = joinToString(prefix = Constants.Symbol.MIDDLE_BRACKET
     it.toString()
 }
 
-fun <T : Any> Iterable<T>.toJson(fields: Array<String> = emptyArray(), jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = JsonUtil.iterableToJson(this, fields, jsonProcessor)
-
-fun <T : Any> Iterable<T>.toJson(fieldMap: Map<String, String>, jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = JsonUtil.iterableToJson(this, fieldMap, jsonProcessor)
+fun <T : Any> Iterable<T>.toJson(jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR) = JsonUtil.iterableToJson(this, jsonProcessor)
 
 fun String.jsonToArrayBoolean(): Array<Boolean> = JsonUtil.jsonToArrayBoolean(this)
 
