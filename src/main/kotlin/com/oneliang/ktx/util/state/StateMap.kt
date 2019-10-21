@@ -13,7 +13,7 @@ class StateMap<T : State>(val startState: T) {
             if (startState.hasNext()) {
                 val nextStateKeySet = startState.nextKeySet
                 for (nextKey in nextStateKeySet) {
-                    val nextState = startState.next(nextKey!!)
+                    val nextState = startState.next(nextKey)
                     printState(nextState)
                 }
             }

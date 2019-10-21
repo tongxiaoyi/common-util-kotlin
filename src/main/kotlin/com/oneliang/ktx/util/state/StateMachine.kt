@@ -36,7 +36,7 @@ class StateMachine<T : State>(private val stateMap: StateMap<T>) {
     val nextStateKeySet: Set<Int>
         get() {
             if (currentState == null) {
-                logger.error("current state is null, so dosen't have next state key set")
+                logger.error("current state is null, so doesn't have next state key set")
                 return emptySet()
             }
             return this.currentState!!.nextKeySet
@@ -82,7 +82,7 @@ class StateMachine<T : State>(private val stateMap: StateMap<T>) {
      */
     fun hasNextState(): Boolean {
         if (currentState == null) {
-            logger.error("current state is null, so dosen't have next state")
+            logger.error("current state is null, so doesn't have next state")
             return false
         }
         return this.currentState!!.hasNext()
