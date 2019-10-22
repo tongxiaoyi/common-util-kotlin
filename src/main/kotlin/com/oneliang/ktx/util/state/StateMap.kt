@@ -3,7 +3,7 @@ package com.oneliang.ktx.util.state
 import com.oneliang.ktx.util.logging.LoggerManager
 import java.util.concurrent.ConcurrentHashMap
 
-class StateMap<T : State>(val startState: T) {
+class StateMap<T : State>(val startState: T, initializeStateMap: Map<String, T> = emptyMap()) {
     companion object {
         private val logger = LoggerManager.getLogger(StateMap::class)
 
@@ -20,13 +20,16 @@ class StateMap<T : State>(val startState: T) {
         }
     }
 
-    private val stateMap = ConcurrentHashMap<Int, T>()
+    private val stateMap = ConcurrentHashMap<String, T>()
 
     init {
+        initializeStateMap.forEach { (key, state) ->
+            this.stateMap[key] = state
+        }
         this.stateMap[this.startState.key] = this.startState
     }
 
-    fun addNextState(key: Int, nextState: T) {
+    fun addNextState(key: String, nextState: T) {
         if (stateMap.containsKey(key)) {
             val previousState = stateMap[key]!!
             previousState.addNextState(nextState)
@@ -42,6 +45,5 @@ class StateMap<T : State>(val startState: T) {
         } catch (e: Exception) {
             logger.error("state not found", e)
         }
-
     }
 }

@@ -4,20 +4,20 @@ import com.oneliang.ktx.Constants
 import com.oneliang.ktx.util.logging.LoggerManager
 import java.util.*
 
-open class State(val key: Int = 0, val name: String = Constants.String.BLANK) {
+open class State(val key: String = Constants.String.BLANK, val name: String = Constants.String.BLANK, private val block: (currentState: State) -> Unit = {}) {
     companion object {
         private val logger = LoggerManager.getLogger(State::class)
     }
 
-    private val previousStateMap = HashMap<Int, State>()
-    private val nextStateMap = HashMap<Int, State>()
+    private val previousStateMap = HashMap<String, State>()
+    private val nextStateMap = HashMap<String, State>()
 
     /**
      * get previous key set
      *
      * @return Set<Integer>
     </Integer> */
-    val previousKeySet: Set<Int>
+    val previousKeySet: Set<String>
         get() = this.previousStateMap.keys
 
     /**
@@ -25,7 +25,7 @@ open class State(val key: Int = 0, val name: String = Constants.String.BLANK) {
      *
      * @return Set<Integer>
     </Integer> */
-    val nextKeySet: Set<Int>
+    val nextKeySet: Set<String>
         get() = this.nextStateMap.keys
 
     /**
@@ -64,7 +64,7 @@ open class State(val key: Int = 0, val name: String = Constants.String.BLANK) {
      * @throws StateNotFoundException
      */
     @Throws(StateNotFoundException::class)
-    fun previous(key: Int): State {
+    fun previous(key: String): State {
         if (previousStateMap.containsKey(key)) {
             return previousStateMap[key]!!
         } else {
@@ -90,12 +90,16 @@ open class State(val key: Int = 0, val name: String = Constants.String.BLANK) {
      * @throws StateNotFoundException
      */
     @Throws(StateNotFoundException::class)
-    fun next(key: Int): State {
+    fun next(key: String): State {
         if (nextStateMap.containsKey(key)) {
             return nextStateMap[key]!!
         } else {
             logger.error("next state key:%s is not exist", key)
             throw StateNotFoundException(String.format("next state key:%s", key))
         }
+    }
+
+    fun run() {
+        block(this)
     }
 }

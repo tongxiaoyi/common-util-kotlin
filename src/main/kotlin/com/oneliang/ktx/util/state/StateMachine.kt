@@ -2,30 +2,20 @@ package com.oneliang.ktx.util.state
 
 import com.oneliang.ktx.util.logging.LoggerManager
 
-class StateMachine<T : State>(private val stateMap: StateMap<T>) {
+class StateMachine<T : State>(var currentState: T, private val stateMap: StateMap<T>) {
 
     companion object {
         private val logger = LoggerManager.getLogger(StateMachine::class)
     }
 
     /**
-     * @return the currentState
-     */
-    var currentState: T? = null
-        private set
-
-    /**
      * get previous state key set
      *
      * @return Set<Integer>
     </Integer> */
-    val previousStateKeySet: Set<Int>
+    val previousStateKeySet: Set<String>
         get() {
-            if (currentState == null) {
-                logger.error("current state is null, so doesn't have previous state key set")
-                return emptySet()
-            }
-            return this.currentState!!.previousKeySet
+            return this.currentState.previousKeySet
         }
 
     /**
@@ -33,18 +23,10 @@ class StateMachine<T : State>(private val stateMap: StateMap<T>) {
      *
      * @return Set<Integer>
     </Integer> */
-    val nextStateKeySet: Set<Int>
+    val nextStateKeySet: Set<String>
         get() {
-            if (currentState == null) {
-                logger.error("current state is null, so doesn't have next state key set")
-                return emptySet()
-            }
-            return this.currentState!!.nextKeySet
+            return this.currentState.nextKeySet
         }
-
-    init {
-        this.currentState = this.stateMap.startState
-    }
 
     /**
      * has previous state
@@ -52,11 +34,7 @@ class StateMachine<T : State>(private val stateMap: StateMap<T>) {
      * @return boolean
      */
     fun hasPreviousState(): Boolean {
-        if (currentState == null) {
-            logger.error("current state is null, so doesn't have previous state")
-            return false
-        }
-        return this.currentState!!.hasPrevious()
+        return this.currentState.hasPrevious()
     }
 
     /**
@@ -67,12 +45,8 @@ class StateMachine<T : State>(private val stateMap: StateMap<T>) {
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(StateNotFoundException::class)
-    fun previousState(key: Int) {
-        if (currentState == null) {
-            logger.error("current state is null")
-            return
-        }
-        this.currentState = this.currentState!!.previous(key) as T
+    fun previousState(key: String) {
+        this.currentState = this.currentState.previous(key) as T
     }
 
     /**
@@ -81,11 +55,7 @@ class StateMachine<T : State>(private val stateMap: StateMap<T>) {
      * @return boolean
      */
     fun hasNextState(): Boolean {
-        if (currentState == null) {
-            logger.error("current state is null, so doesn't have next state")
-            return false
-        }
-        return this.currentState!!.hasNext()
+        return this.currentState.hasNext()
     }
 
     /**
@@ -96,11 +66,7 @@ class StateMachine<T : State>(private val stateMap: StateMap<T>) {
      */
     @Suppress("UNCHECKED_CAST")
     @Throws(StateNotFoundException::class)
-    fun nextState(key: Int) {
-        if (currentState == null) {
-            logger.error("current state is null")
-            return
-        }
-        this.currentState = this.currentState!!.next(key) as T
+    fun nextState(key: String) {
+        this.currentState = this.currentState.next(key) as T
     }
 }
