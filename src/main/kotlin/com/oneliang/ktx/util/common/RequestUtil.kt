@@ -37,21 +37,25 @@ object RequestUtil {
         }
         return parameterMap
     }
+
+    fun toParameterString(parameterMap: Map<String, Array<String>>): String {
+        val stringBuilder = StringBuilder()
+        parameterMap.forEach { (key, value) ->
+            value.forEach { it ->
+                stringBuilder.append(key)
+                stringBuilder.append(Constants.Symbol.EQUAL)
+                stringBuilder.append(it)
+                stringBuilder.append(Constants.Symbol.AND)
+            }
+        }
+        return if (stringBuilder.isNotEmpty()) {
+            stringBuilder.substring(0, stringBuilder.length - 1)
+        } else {
+            Constants.String.BLANK
+        }
+    }
 }
 
 fun Map<String, Array<String>>.toParameterString(): String {
-    val stringBuilder = StringBuilder()
-    this.forEach { (key, value) ->
-        value.forEach { it ->
-            stringBuilder.append(key)
-            stringBuilder.append(Constants.Symbol.EQUAL)
-            stringBuilder.append(it)
-            stringBuilder.append(Constants.Symbol.AND)
-        }
-    }
-    return if (stringBuilder.isNotEmpty()) {
-        stringBuilder.substring(0, stringBuilder.length - 1)
-    } else {
-        Constants.String.BLANK
-    }
+    return RequestUtil.toParameterString(this)
 }

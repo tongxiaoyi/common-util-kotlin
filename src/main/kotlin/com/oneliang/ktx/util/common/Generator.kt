@@ -82,7 +82,7 @@ object Generator {
         val stringBuilder = StringBuilder()
         val random = Random()
         for (i in 0 until size) {
-            val string = Character.toString(characters[random.nextInt(characters.size)])
+            val string = characters[random.nextInt(characters.size)].toString()
             stringBuilder.append(string)
         }
         return stringBuilder.toString()
