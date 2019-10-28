@@ -165,6 +165,10 @@ object Constants {
          * tilde "~"
          */
         const val TILDE = "~"
+        /**
+         * accent "`"
+         */
+        const val ACCENT = "`"
     }
 
     object Encoding {
