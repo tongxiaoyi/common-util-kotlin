@@ -177,7 +177,7 @@ object JsonUtil {
         val subString = StringBuilder()
         map.forEach { (key, instance) ->
             val value = jsonProcessor.process(instance::class, key.toString(), instance, ignoreFirstLetterCase)
-            subString.append(Constants.Symbol.DOUBLE_QUOTES + key.toString() + Constants.Symbol.DOUBLE_QUOTES + Constants.Symbol.COLON + value.toString() + Constants.Symbol.COMMA)
+            subString.append(Constants.Symbol.DOUBLE_QUOTES + key.toString() + Constants.Symbol.DOUBLE_QUOTES + Constants.Symbol.COLON + value)
             subString.append(Constants.Symbol.COMMA)
         }
         if (subString.isNotEmpty()) {
