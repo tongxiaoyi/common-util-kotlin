@@ -6,8 +6,8 @@ import java.io.BufferedWriter
 
 object CsvUtil {
 
-    fun saveToCsvFile(fullFilename: String, dataList: List<Array<String>>) {
-        FileUtil.writeFileContent(fullFilename, object : FileUtil.WriteFileContentProcessor {
+    fun saveToCsvFile(fullFilename: String, dataList: List<Array<String>>, charsetName: String = Constants.Encoding.UTF8) {
+        FileUtil.writeFileContent(fullFilename, charsetName, object : FileUtil.WriteFileContentProcessor {
             override fun writeContent(bufferedWriter: BufferedWriter) {
                 dataList.forEach { data ->
                     val lineStringBuilder = StringBuilder()
@@ -23,6 +23,6 @@ object CsvUtil {
     }
 }
 
-fun List<Array<String>>.saveToCsvFile(fullFilename: String) {
-    CsvUtil.saveToCsvFile(fullFilename, this)
+fun List<Array<String>>.saveToCsvFile(fullFilename: String, charsetName: String = Constants.Encoding.UTF8) {
+    CsvUtil.saveToCsvFile(fullFilename, this, charsetName)
 }

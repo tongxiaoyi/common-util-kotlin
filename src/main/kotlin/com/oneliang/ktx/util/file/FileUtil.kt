@@ -2,7 +2,7 @@ package com.oneliang.ktx.util.file
 
 import com.oneliang.ktx.Constants
 import java.io.*
-import java.util.Properties
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.zip.ZipEntry
 import java.util.zip.ZipException
@@ -599,11 +599,11 @@ object FileUtil {
      * @param fullFilename
      * @param writeFileContentProcessor
      */
-    fun writeFileContent(fullFilename: String, writeFileContentProcessor: WriteFileContentProcessor? = null) {
+    fun writeFileContent(fullFilename: String, charsetName: String = Constants.Encoding.UTF8, writeFileContentProcessor: WriteFileContentProcessor? = null) {
         createFile(fullFilename)
         var bufferedWriter: BufferedWriter? = null
         try {
-            bufferedWriter = BufferedWriter(OutputStreamWriter(FileOutputStream(fullFilename)))
+            bufferedWriter = BufferedWriter(OutputStreamWriter(FileOutputStream(fullFilename), charsetName))
             if (writeFileContentProcessor != null) {
                 writeFileContentProcessor.writeContent(bufferedWriter)
             }
