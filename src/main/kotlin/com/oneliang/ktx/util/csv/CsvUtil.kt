@@ -15,6 +15,7 @@ object CsvUtil {
                         lineStringBuilder.append(it)
                         lineStringBuilder.append(Constants.Symbol.COMMA)
                     }
+                    bufferedWriter.write(lineStringBuilder.toString())
                     bufferedWriter.newLine()
                     bufferedWriter.flush()
                 }
