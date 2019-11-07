@@ -388,7 +388,7 @@ object HttpUtil {
             }
             httpUrlConnection.connect()
             if (method.isNotBlank() && method.equals(Constants.Http.RequestMethod.POST.value, ignoreCase = true)) {
-                val outputStream = httpUrlConnection.getOutputStream()
+                val outputStream = httpUrlConnection.outputStream
                 outputStream.write(content.toString().toByteArray(Charsets.UTF_8))
                 if (streamByteArray.isNotEmpty()) {
                     outputStream.write(streamByteArray)

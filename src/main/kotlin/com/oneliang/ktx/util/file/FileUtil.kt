@@ -374,7 +374,7 @@ object FileUtil {
      * @param zipFullFilenameList
      */
     fun mergeZip(zipOutputFullFilename: String, zipFullFilenameList: List<String>?) {
-        FileUtil.createFile(zipOutputFullFilename)
+        createFile(zipOutputFullFilename)
         var zipOutputStream: ZipOutputStream? = null
         try {
             zipOutputStream = ZipOutputStream(FileOutputStream(zipOutputFullFilename))
@@ -471,7 +471,7 @@ object FileUtil {
      * @param byteArray
      */
     fun writeFile(outputFullFilename: String, byteArray: ByteArray) {
-        FileUtil.createFile(outputFullFilename)
+        createFile(outputFullFilename)
         val inputStream = ByteArrayInputStream(byteArray)
         var outputStream: OutputStream? = null
         try {
@@ -833,7 +833,7 @@ object FileUtil {
      */
     fun getPropertiesAutoCreate(propertiesFullFilename: String): Properties {
         if (!FileUtil.isExist(propertiesFullFilename)) {
-            FileUtil.createFile(propertiesFullFilename)
+            createFile(propertiesFullFilename)
         }
         return getProperties(propertiesFullFilename)
     }

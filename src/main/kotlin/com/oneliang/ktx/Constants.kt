@@ -319,6 +319,10 @@ object Constants {
     }
 
     object File {
+        object Header {
+            val CSV = byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte())
+        }
+
         const val CLASS = "class"
         const val JPEG = "jpeg"
         const val JPG = "jpg"
