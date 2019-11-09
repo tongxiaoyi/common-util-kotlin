@@ -9,6 +9,12 @@ import java.security.MessageDigest
 fun String.MD5(): ByteArray = MessageDigestUtil.digest(this.toByteArray(Charsets.UTF_8), MessageDigestUtil.Algorithm.MD5)
 fun String.MD5String(): String = this.MD5().toHexString()
 
+fun String.SHA1(): ByteArray = MessageDigestUtil.digest(this.toByteArray(Charsets.UTF_8), MessageDigestUtil.Algorithm.SHA1)
+fun String.SHA1String(): String = this.SHA1().toHexString()
+
+fun ByteArray.SHA1(): ByteArray = MessageDigestUtil.digest(this, MessageDigestUtil.Algorithm.SHA1)
+fun ByteArray.SHA1String(): String = this.SHA1().toHexString()
+
 fun ByteArray.MD5(): ByteArray = MessageDigestUtil.digest(this, MessageDigestUtil.Algorithm.MD5)
 fun ByteArray.MD5String(): String = this.MD5().toHexString()
 
