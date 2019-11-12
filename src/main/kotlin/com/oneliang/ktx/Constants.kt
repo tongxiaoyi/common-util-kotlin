@@ -20,6 +20,7 @@ object Constants {
         const val YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss"//always used for database
         const val YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND = "yyyy-MM-dd HH:mm:ss,SSS"//always used for log
         const val DEFAULT_DATE_FORMAT = "EEE MMM dd HH:mm:ss zzz yyyy"
+        const val UNION_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND="yyyyMMddHHmmssSSS"
     }
 
     object String {

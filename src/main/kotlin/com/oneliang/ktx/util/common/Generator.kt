@@ -1,9 +1,9 @@
 package com.oneliang.ktx.util.common
 
+import com.oneliang.ktx.Constants
 import java.awt.Color
 import java.awt.Font
 import java.awt.image.BufferedImage
-import java.io.FileInputStream
 import java.util.*
 
 object Generator {
@@ -18,6 +18,11 @@ object Generator {
         }
     }
     private val sequenceCountThreadLocal = object : ThreadLocal<Int>() {
+        override fun initialValue(): Int {
+            return 0
+        }
+    }
+    private val orderNumberCountThreadLocal = object : ThreadLocal<Int>() {
         override fun initialValue(): Int {
             return 0
         }
@@ -43,7 +48,7 @@ object Generator {
             threadId
         }
         val timeMillis = System.currentTimeMillis()
-        val result = timeMillis.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH + 1 - fixThreadId.toString().length) + fixThreadId.toString() + StringUtil.fillZero(COUNT_MAX_LENGTH - fixCount.toString().length) + fixCount.toString()
+        val result = timeMillis.toString() + fixThreadId.toFillZeroString(COUNT_MAX_LENGTH + 1) + fixCount.toFillZeroString(COUNT_MAX_LENGTH)
         count++
         countThreadLocal.set(count)
         return result
@@ -55,12 +60,15 @@ object Generator {
      */
     fun generateSequence(): Long {
         var sequenceCount = sequenceCountThreadLocal.get()
-        val timeMillis = System.currentTimeMillis()
-        val result = timeMillis * 1000 + sequenceCount
-        sequenceCount++
-        if (sequenceCount > COUNT_MAX_VALUE) {
+        val fixSequenceCount = if (sequenceCount > COUNT_MAX_VALUE) {
             sequenceCount = 0
+            sequenceCount
+        } else {
+            sequenceCount
         }
+        val timeMillis = System.currentTimeMillis()
+        val result = timeMillis * 1000 + fixSequenceCount
+        sequenceCount++
         sequenceCountThreadLocal.set(sequenceCount)
         return result
     }
@@ -71,6 +79,17 @@ object Generator {
      */
     fun UUID(): String {
         return UUID.randomUUID().toString()
+    }
+
+    fun generateOrderNumber(prefix: String = Constants.String.BLANK, suffix: String): String {
+        var orderNumberCount = orderNumberCountThreadLocal.get()
+        val fixOrderNumberCount = if (orderNumberCount > COUNT_MAX_VALUE) {
+            orderNumberCount = 0
+            orderNumberCount
+        } else {
+            orderNumberCount
+        }
+        return Date().toFormatString(Constants.Time.UNION_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND) + fixOrderNumberCount.toFillZeroString(COUNT_MAX_LENGTH)
     }
 
     /**
@@ -236,52 +255,5 @@ object Generator {
 		 * 对上面的数据进行哈希运算。
 		 */
         return secondAppendResult.MD5()
-    }
-
-    /**
-     * md5 file
-     * @param fullFilename
-     * @return String
-     */
-    fun MD5File(fullFilename: String): String {
-        val result: String
-        try {
-            result = FileInputStream(fullFilename).MD5String()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-        return result
-    }
-
-    /**
-     * SHA1 byte array
-     * @param byteArray
-     * @return byte[]
-     */
-    fun SHA1ByteArray(byteArray: ByteArray): ByteArray {
-        val result: ByteArray
-        try {
-            val digest = java.security.MessageDigest.getInstance("SHA-1")
-            digest.update(byteArray)
-            result = digest.digest()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-        return result
-    }
-
-    /**
-     * SHA1
-     * @param source
-     * @return String
-     */
-    fun SHA1(source: String): String {
-        val string: String
-        try {
-            string = SHA1ByteArray(source.toByteArray(Charsets.UTF_8)).toHexString()
-        } catch (e: Exception) {
-            throw RuntimeException(e)
-        }
-        return string
     }
 }
