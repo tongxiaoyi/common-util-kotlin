@@ -81,7 +81,7 @@ object Generator {
         return UUID.randomUUID().toString()
     }
 
-    fun generateOrderNumber(prefix: String = Constants.String.BLANK, suffix: String): String {
+    fun generateOrderNumber(prefix: String = Constants.String.BLANK, suffix: String = Constants.String.BLANK): String {
         var orderNumberCount = orderNumberCountThreadLocal.get()
         val fixOrderNumberCount = if (orderNumberCount > COUNT_MAX_VALUE) {
             orderNumberCount = 0
@@ -89,7 +89,7 @@ object Generator {
         } else {
             orderNumberCount
         }
-        return Date().toFormatString(Constants.Time.UNION_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND) + fixOrderNumberCount.toFillZeroString(COUNT_MAX_LENGTH)
+        return prefix + Date().toFormatString(Constants.Time.UNION_YEAR_MONTH_DAY_HOUR_MINUTE_SECOND_MILLISECOND) + fixOrderNumberCount.toFillZeroString(COUNT_MAX_LENGTH) + suffix
     }
 
     /**
