@@ -100,9 +100,9 @@ fun String.toUnicode(): String {
 
 fun String.fromUnicode(regex: String = UnicodeRegex.REGEX_ALL): String {
     val groupList = this.parseRegexGroup(regex)
-    var tempResult: String = this
+    var result: String = this
     for (group in groupList) {
-        tempResult = tempResult.replaceFirst(regex.toRegex(), group.toInt(radix = 16).toChar().toString())
+        result = result.replaceFirst(regex.toRegex(), group.toInt(radix = 16).toChar().toString())
     }
-    return tempResult
+    return result
 }
