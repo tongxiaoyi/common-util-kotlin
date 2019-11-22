@@ -106,3 +106,7 @@ fun String.fromUnicode(regex: String = UnicodeRegex.REGEX_ALL): String {
     }
     return result
 }
+
+fun String.transferQuotes(): String {
+    return this.replace(Constants.Symbol.DOUBLE_QUOTES, Constants.Symbol.SLASH_RIGHT + Constants.Symbol.DOUBLE_QUOTES)
+}
