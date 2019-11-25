@@ -58,6 +58,6 @@ fun String.jsonToArrayDouble(): Array<Double> = JsonUtil.jsonToArrayDouble(this)
 
 fun String.jsonToArrayString(): Array<String> = JsonUtil.jsonToArrayString(this)
 
-fun <T : Any> String.jsonToObject(clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = JsonUtil.DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR): T = JsonUtil.jsonToObject(this, clazz, classProcessor)
+fun <T : Any> String.jsonToObject(kClass: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = JsonUtil.DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR): T = JsonUtil.jsonToObject(this, kClass, classProcessor)
 
-fun <T : Any> String.jsonToObjectList(clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = JsonUtil.DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR): List<T> = JsonUtil.jsonToObjectList(this, clazz, classProcessor)
+fun <T : Any> String.jsonToObjectList(kClass: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = JsonUtil.DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR): List<T> = JsonUtil.jsonToObjectList(this, kClass, classProcessor)

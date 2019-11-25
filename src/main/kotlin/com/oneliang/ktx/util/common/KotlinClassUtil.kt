@@ -177,11 +177,11 @@ object KotlinClassUtil {
 
         /**
          * change class process
-         * @param clazz
+         * @param kClass
          * @param values
          * @param fieldName is null if not exist
          * @return Object
          */
-        fun <T : Any> changeClassProcess(clazz: KClass<T>, values: Array<String>, fieldName: String): Any?
+        fun <T : Any> changeClassProcess(kClass: KClass<T>, values: Array<String>, fieldName: String): Any?
     }
 }

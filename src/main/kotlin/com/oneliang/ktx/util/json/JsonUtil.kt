@@ -198,14 +198,14 @@ object JsonUtil {
      */
     fun <T : Any> objectToJson(instance: T, fields: Array<String>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
         val objectJson = StringBuilder()
-        val clazz = instance.javaClass.kotlin
+        val kClass = instance.javaClass.kotlin
         objectJson.append(Constants.Symbol.BIG_BRACKET_LEFT)
         if (fields.isNotEmpty()) {
             val length = fields.size
             for (i in 0 until length) {
                 val fieldName = fields[i]
                 var methodReturnValue = ObjectUtil.getterOrIsMethodInvoke(instance, fieldName, ignoreFirstLetterCase)
-                methodReturnValue = jsonProcessor.process(clazz, fieldName, methodReturnValue, ignoreFirstLetterCase)
+                methodReturnValue = jsonProcessor.process(kClass, fieldName, methodReturnValue, ignoreFirstLetterCase)
                 objectJson.append(Constants.Symbol.DOUBLE_QUOTES + fieldName + Constants.Symbol.DOUBLE_QUOTES + Constants.Symbol.COLON + methodReturnValue.toString())
                 if (i < length - 1) {
                     objectJson.append(Constants.Symbol.COMMA)
@@ -224,7 +224,7 @@ object JsonUtil {
                     } catch (e: Exception) {
                         throw MethodInvokeException(e)
                     }
-                    value = jsonProcessor.process(clazz, fieldName, value, ignoreFirstLetterCase)
+                    value = jsonProcessor.process(kClass, fieldName, value, ignoreFirstLetterCase)
                     subString.append(Constants.Symbol.DOUBLE_QUOTES + fieldName + Constants.Symbol.DOUBLE_QUOTES + Constants.Symbol.COLON + value.toString() + Constants.Symbol.COMMA)
                 }
             }
@@ -249,7 +249,7 @@ object JsonUtil {
     </T> */
     fun <T : Any> objectToJson(instance: T, fieldMap: Map<String, String>, jsonProcessor: JsonProcessor = DEFAULT_JSON_PROCESSOR, ignoreFirstLetterCase: Boolean = false): String {
         val objectJson = StringBuilder()
-        val clazz = instance.javaClass.kotlin
+        val kClass = instance.javaClass.kotlin
         val iterator = fieldMap.entries.iterator()
         objectJson.append(Constants.Symbol.BIG_BRACKET_LEFT)
         while (iterator.hasNext()) {
@@ -257,7 +257,7 @@ object JsonUtil {
             val key = entry.key
             val fieldName = entry.value
             var methodReturnValue = ObjectUtil.getterOrIsMethodInvoke(instance, fieldName, ignoreFirstLetterCase)
-            methodReturnValue = jsonProcessor.process(clazz, fieldName, methodReturnValue, ignoreFirstLetterCase)
+            methodReturnValue = jsonProcessor.process(kClass, fieldName, methodReturnValue, ignoreFirstLetterCase)
             objectJson.append(key + Constants.Symbol.COLON + methodReturnValue.toString())
             if (iterator.hasNext()) {
                 objectJson.append(Constants.Symbol.COMMA)
@@ -270,16 +270,16 @@ object JsonUtil {
     /**
      * jsonObject to object
      * @param jsonObject
-     * @param clazz
+     * @param kClass
      * @param classProcessor
      * @param ignoreFirstLetterCase
      * @return T
      */
-    fun <T : Any> jsonObjectToObject(jsonObject: JsonObject, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
+    fun <T : Any> jsonObjectToObject(jsonObject: JsonObject, kClass: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
         val instance: T
-        val methods = clazz.java.methods
+        val methods = kClass.java.methods
         try {
-            instance = clazz.java.newInstance()
+            instance = kClass.java.newInstance()
         } catch (e: Exception) {
             throw RuntimeException(e)
         }
@@ -322,7 +322,7 @@ object JsonUtil {
                         try {
                             method.invoke(instance, value)
                         } catch (e: Exception) {
-                            throw MethodInvokeException(clazz.simpleName + Constants.Symbol.DOT + fieldName, e)
+                            throw MethodInvokeException(kClass.simpleName + Constants.Symbol.DOT + fieldName, e)
                         }
                     }
                 }
@@ -334,36 +334,36 @@ object JsonUtil {
     /**
      * jsonArray to array,just include base array and simple array
      * @param jsonArray
-     * @param clazz
+     * @param kClass
      * @param fieldName
      * @param classProcessor
      * @return Object
      */
-    private fun jsonArrayToArray(jsonArray: JsonArray, clazz: KClass<*>, fieldName: String, classProcessor: KotlinClassUtil.KotlinClassProcessor): Any {
+    private fun jsonArrayToArray(jsonArray: JsonArray, kClass: KClass<*>, fieldName: String, classProcessor: KotlinClassUtil.KotlinClassProcessor): Any {
         val length = jsonArray.length()
         val values = Array(length) { Constants.String.BLANK }
         for (i in 0 until length) {
             values[i] = jsonArray.get(i).toString()
         }
-        return KotlinClassUtil.changeType(clazz, values, fieldName, classProcessor) ?: Constants.String.BLANK
+        return KotlinClassUtil.changeType(kClass, values, fieldName, classProcessor) ?: Constants.String.BLANK
     }
 
     /**
      * jsonArray to list
      * @param <T>
      * @param jsonArray
-     * @param clazz
+     * @param kClass
      * @param classProcessor
      * @param ignoreFirstLetterCase
      * @return List<T>
     </T></T> */
-    fun <T : Any> jsonArrayToList(jsonArray: JsonArray, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
+    fun <T : Any> jsonArrayToList(jsonArray: JsonArray, kClass: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
         val length = jsonArray.length()
         val list = mutableListOf<T>()
         for (i in 0 until length) {
             val instance = jsonArray.get(i)
             if (instance is JsonObject) {
-                list.add(jsonObjectToObject(instance, clazz, classProcessor, ignoreFirstLetterCase))
+                list.add(jsonObjectToObject(instance, kClass, classProcessor, ignoreFirstLetterCase))
             }
         }
         return list
@@ -372,27 +372,27 @@ object JsonUtil {
     /**
      * json to object
      * @param json
-     * @param clazz
+     * @param kClass
      * @param classProcessor
      * @param ignoreFirstLetterCase
      * @return T
      */
-    fun <T : Any> jsonToObject(json: String, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
+    fun <T : Any> jsonToObject(json: String, kClass: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): T {
         val jsonObject = JsonObject(json)
-        return jsonObjectToObject(jsonObject, clazz, classProcessor, ignoreFirstLetterCase)
+        return jsonObjectToObject(jsonObject, kClass, classProcessor, ignoreFirstLetterCase)
     }
 
     /**
      * json to object list
      * @param json
-     * @param clazz
+     * @param kClass
      * @param classProcessor
      * @param ignoreFirstLetterCase
      * @return List<T>
     </T> */
-    fun <T : Any> jsonToObjectList(json: String, clazz: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
+    fun <T : Any> jsonToObjectList(json: String, kClass: KClass<T>, classProcessor: KotlinClassUtil.KotlinClassProcessor = DEFAULT_JSON_KOTLIN_CLASS_PROCESSOR, ignoreFirstLetterCase: Boolean = false): List<T> {
         val jsonArray = JsonArray(json)
-        return jsonArrayToList(jsonArray, clazz, classProcessor, ignoreFirstLetterCase)
+        return jsonArrayToList(jsonArray, kClass, classProcessor, ignoreFirstLetterCase)
     }
 
     class JsonUtilException(message: String) : RuntimeException(message)
@@ -402,12 +402,12 @@ object JsonUtil {
         /**
          * process
          * @param <T>
-         * @param clazz
+         * @param kClass
          * @param fieldName
          * @param value
          * @param ignoreFirstLetterCase
          * @return String
          */
-        fun <T : Any> process(clazz: KClass<T>? = null, fieldName: String, value: Any? = null, ignoreFirstLetterCase: Boolean): String
+        fun <T : Any> process(kClass: KClass<T>? = null, fieldName: String, value: Any? = null, ignoreFirstLetterCase: Boolean): String
     }
 }

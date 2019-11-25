@@ -14,15 +14,15 @@ open class DefaultKotlinClassProcessor : KotlinClassUtil.KotlinClassProcessor {
 
     /**
      * simple class type process
-     * @param clazz
+     * @param kClass
      * @param values
      * @param fieldName is null if not exist
      * @return Object
      */
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> changeClassProcess(clazz: KClass<T>, values: Array<String>, fieldName: String): Any? {
+    override fun <T : Any> changeClassProcess(kClass: KClass<T>, values: Array<String>, fieldName: String): Any? {
         var value: Any? = null
-        val classType = KotlinClassUtil.getClassType(clazz)
+        val classType = KotlinClassUtil.getClassType(kClass)
         when (classType) {
             KotlinClassUtil.ClassType.KOTLIN_CHARACTER -> if (values.isNotEmpty() && values[0].isNotBlank()) {
                 value = values[0][0]
