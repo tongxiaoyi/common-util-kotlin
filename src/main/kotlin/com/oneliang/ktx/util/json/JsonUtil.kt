@@ -408,6 +408,6 @@ object JsonUtil {
          * @param ignoreFirstLetterCase
          * @return String
          */
-        fun <T : Any> process(kClass: KClass<T>? = null, fieldName: String, value: Any? = null, ignoreFirstLetterCase: Boolean): String
+        fun <T : Any> process(kClass: KClass<T>? = null, fieldName: String, value: Any? = null, ignoreFirstLetterCase: Boolean = false): String
     }
 }

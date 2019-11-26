@@ -13,7 +13,7 @@ open class DefaultJsonProcessor : JsonUtil.JsonProcessor {
      * default json processor
      */
     @Suppress("UNCHECKED_CAST")
-    override fun <T : Any> process(clazz: KClass<T>?, fieldName: String, value: Any?, ignoreFirstLetterCase: Boolean): String {
+    override fun <T : Any> process(kClass: KClass<T>?, fieldName: String, value: Any?, ignoreFirstLetterCase: Boolean): String {
         if (value == null) {
             return Constants.String.NULL
         }
