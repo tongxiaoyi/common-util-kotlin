@@ -3,7 +3,7 @@ package com.oneliang.ktx.util.json
 import com.oneliang.ktx.Constants
 import com.oneliang.ktx.util.common.KotlinClassUtil
 import com.oneliang.ktx.util.common.toFormatString
-import com.oneliang.ktx.util.common.transferQuotes
+import com.oneliang.ktx.util.common.transformQuotes
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -34,7 +34,7 @@ open class DefaultJsonProcessor : JsonUtil.JsonProcessor {
                 || valueKClazz == Byte::class) {
             result = value.toString()
         } else if (valueKClazz == String::class || valueKClazz == Char::class || valueKClazz == CharSequence::class) {
-            result = Constants.Symbol.DOUBLE_QUOTES + value.toString().transferQuotes() + Constants.Symbol.DOUBLE_QUOTES
+            result = Constants.Symbol.DOUBLE_QUOTES + value.toString().transformQuotes() + Constants.Symbol.DOUBLE_QUOTES
         } else if (valueKClazz == Date::class) {
             result = Constants.Symbol.DOUBLE_QUOTES + (value as Date).toFormatString() + Constants.Symbol.DOUBLE_QUOTES
         } else {

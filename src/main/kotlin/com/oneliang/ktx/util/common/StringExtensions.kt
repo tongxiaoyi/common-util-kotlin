@@ -107,6 +107,14 @@ fun String.fromUnicode(regex: String = UnicodeRegex.REGEX_ALL): String {
     return result
 }
 
-fun String.transferQuotes(): String {
+fun String.transformQuotes(): String {
     return this.replace(Constants.Symbol.DOUBLE_QUOTES, Constants.Symbol.SLASH_RIGHT + Constants.Symbol.DOUBLE_QUOTES)
+}
+
+fun String.replaceAllSpace(): String {
+    return this.replace(Constants.String.SPACE, Constants.String.BLANK)
+}
+
+fun String.replaceAllLines(): String {
+    return this.replace(Constants.String.CR_STRING, Constants.String.BLANK).replace(Constants.String.LF_STRING, Constants.String.BLANK)
 }
