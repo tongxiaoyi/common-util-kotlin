@@ -10,7 +10,7 @@ def artifactName = 'common-util-kotlin'
 
 buildscript {
     ext {
-        kotlin_version = '1.3.20'
+        kotlin_version = '1.3.50'
     }
     repositories {
         mavenLocal()
