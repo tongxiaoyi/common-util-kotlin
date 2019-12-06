@@ -1,7 +1,7 @@
 package com.oneliang.ktx.util.jxl
 
 import com.oneliang.ktx.Constants
-import java.util.concurrent.CopyOnWriteArrayList
+import com.oneliang.ktx.util.common.nullToBlank
 
 class JxlMappingBean {
     companion object {
@@ -23,25 +23,17 @@ class JxlMappingBean {
      * @param type the type to set
      */
     var type: String = Constants.String.BLANK
-    val jxlMappingColumnBeanList = CopyOnWriteArrayList<JxlMappingColumnBean>()
+    val jxlMappingColumnBeanList = mutableListOf<JxlMappingColumnBean>()
+    private val jxlMappingColumnBeanMap = mutableMapOf<String, JxlMappingColumnBean>()
 
     /**
      * get header
      * @param field
      * @return header
      */
-    fun getHeader(field: String?): String? {
-        var header: String? = null
-        if (field != null) {
-            for (jxlMappingColumnBean in jxlMappingColumnBeanList) {
-                val columnField = jxlMappingColumnBean.field
-                if (columnField == field) {
-                    header = jxlMappingColumnBean.header
-                    break
-                }
-            }
-        }
-        return header
+    fun getHeader(field: String): String {
+        val jxlMappingColumnBean = this.jxlMappingColumnBeanMap[field]
+        return jxlMappingColumnBean?.header.nullToBlank()
     }
 
     /**
@@ -49,15 +41,14 @@ class JxlMappingBean {
      * @param header
      * @return field
      */
-    fun getField(header: String?): String? {
-        var field: String? = null
-        if (header != null) {
-            for (jxlMappingColumnBean in jxlMappingColumnBeanList) {
-                val columnHeader = jxlMappingColumnBean.header
-                if (columnHeader == header) {
-                    field = jxlMappingColumnBean.field
-                    break
-                }
+    @Deprecated("Deprecated")
+    private fun getField(header: String): String {
+        var field: String = Constants.String.BLANK
+        for (jxlMappingColumnBean in jxlMappingColumnBeanList) {
+            val columnHeader = jxlMappingColumnBean.header
+            if (columnHeader == header) {
+                field = jxlMappingColumnBean.field
+                break
             }
         }
         return field
@@ -68,18 +59,9 @@ class JxlMappingBean {
      * @param field
      * @return field index
      */
-    fun getIndex(field: String?): Int {
-        var index = -1
-        if (field != null) {
-            for (jxlMappingColumnBean in jxlMappingColumnBeanList) {
-                val columnField = jxlMappingColumnBean.field
-                if (columnField != null && columnField == field) {
-                    index = jxlMappingColumnBean.index
-                    break
-                }
-            }
-        }
-        return index
+    fun getIndex(field: String): Int {
+        val jxlMappingColumnBean = this.jxlMappingColumnBeanMap[field]
+        return jxlMappingColumnBean?.index ?: -1
     }
 
     /**
@@ -87,6 +69,10 @@ class JxlMappingBean {
      * @return boolean
      */
     fun addJxlMappingColumnBean(jxlMappingColumnBean: JxlMappingColumnBean): Boolean {
+        if (jxlMappingColumnBean.field.isBlank()) {
+            error("jxl mapping column field can not blank")
+        }
+        this.jxlMappingColumnBeanMap[jxlMappingColumnBean.field] = jxlMappingColumnBean
         return this.jxlMappingColumnBeanList.add(jxlMappingColumnBean)
     }
 }

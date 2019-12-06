@@ -2,6 +2,8 @@ package com.oneliang.ktx.util.jxl
 
 import com.oneliang.ktx.Constants
 import com.oneliang.ktx.util.common.ObjectUtil
+import com.oneliang.ktx.util.common.nullToBlank
+import com.oneliang.ktx.util.common.toMapWithIndex
 import jxl.Cell
 import jxl.Workbook
 import jxl.write.Label
@@ -43,44 +45,49 @@ object JxlUtil {
     /**
      * simpleExcelImport
      * @param <T>
-     * @param file
-     * @param clazz
+     * @param fullFilename
+     * @param kClass
      * @param jxlMappingBean
+     * @param dataRowOffset
      * @param jxlProcessor
      * @return List<T>
     </T></T> */
-    fun <T : Any> simpleExcelImport(file: String, clazz: Class<T>, jxlMappingBean: JxlMappingBean, jxlProcessor: JxlProcessor = DEFAULT_JXL_PROCESSOR): List<T> {
-        return simpleExcelImport(file, clazz, jxlMappingBean, 0, jxlProcessor)
-    }
-
-    /**
-     * simpleExcelImport
-     * @param <T>
-     * @param file
-     * @param clazz
-     * @param jxlMappingBean
-     * @param offset
-     * @param jxlProcessor
-     * @return List<T>
-    </T></T> */
-    fun <T : Any> simpleExcelImport(file: String, clazz: Class<T>, jxlMappingBean: JxlMappingBean, offset: Int, jxlProcessor: JxlProcessor = DEFAULT_JXL_PROCESSOR): List<T> {
+    fun <T : Any> simpleExcelImport(fullFilename: String, kClass: KClass<T>, jxlMappingBean: JxlMappingBean, headerRowIndex: Int = -1, dataRowOffset: Int = 0, jxlProcessor: JxlProcessor = DEFAULT_JXL_PROCESSOR): List<T> {
         val list = mutableListOf<T>()
         try {
-            val workbook = Workbook.getWorkbook(File(file))
+            val workbook = Workbook.getWorkbook(File(fullFilename))
             val sheets = workbook.sheets
             val sheet = (if (sheets.isNotEmpty()) sheets[0] else null) ?: return list
             val rows = sheet.rows
-            for (i in offset until rows) {
-                val instance = clazz.newInstance()
-                val methods = clazz.methods
+            if (rows < headerRowIndex + 1) {
+                return list
+            }
+
+            //find header maybe has no header
+            var headerIndexMap = emptyMap<String, Int>()
+            if (headerRowIndex < 0) {
+                val headerCellArray = sheet.getRow(headerRowIndex)
+                headerIndexMap = headerCellArray.toMapWithIndex { index, t ->
+                    t.contents.nullToBlank() to index
+                }
+            }
+            val existHeader = headerIndexMap.isNotEmpty()
+            for (i in dataRowOffset until rows) {
+                val instance = kClass.java.newInstance()
+                val methods = kClass.java.methods
                 for (method in methods) {
                     val methodName = method.name
-                    var fieldName: String? = null
+                    var fieldName = Constants.String.BLANK
                     if (methodName.startsWith(Constants.Method.PREFIX_SET)) {
                         fieldName = ObjectUtil.methodNameToFieldName(Constants.Method.PREFIX_SET, methodName)
                     }
-                    if (fieldName != null) {
-                        val columnIndex = jxlMappingBean.getIndex(fieldName)
+                    if (fieldName.isNotBlank()) {
+                        val columnIndex = if (existHeader) {
+                            val header = jxlMappingBean.getHeader(fieldName)
+                            headerIndexMap[header] ?: -1
+                        } else {
+                            jxlMappingBean.getIndex(fieldName)
+                        }
                         if (columnIndex >= 0) {
                             val cell = sheet.getCell(columnIndex, i)
                             val classes = method.parameterTypes
