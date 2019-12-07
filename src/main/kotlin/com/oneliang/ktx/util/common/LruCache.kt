@@ -66,7 +66,7 @@ import java.util.*
  * of [Android's
  * Support Package](http://developer.android.com/sdk/compatibility-library.html) for earlier releases.
  */
-class LruCache<K, V>
+open class LruCache<K, V>
 /**
  * @param maxSize for caches that do not override [.sizeOf], this is
  * the maximum number of entries in the cache. For all other caches,
@@ -274,7 +274,7 @@ class LruCache<K, V>
      * this removal was caused by a [.put]. Otherwise it was caused by
      * an eviction or a [.remove].
      */
-    protected fun entryRemoved(evicted: Boolean, key: K, oldValue: V, newValue: V?) {}
+    protected open fun entryRemoved(evicted: Boolean, key: K, oldValue: V, newValue: V?) {}
 
     /**
      * Called after a cache miss to compute a value for the corresponding key.
@@ -293,7 +293,7 @@ class LruCache<K, V>
      * thread calls [.put] while another is creating a value for the same
      * key.
      */
-    protected fun create(key: K): V? {
+    protected open fun create(key: K): V? {
         return null
     }
 
@@ -313,7 +313,7 @@ class LruCache<K, V>
      *
      * An entry's size must not change while it is in the cache.
      */
-    protected fun sizeOf(key: K, value: V): Int {
+    protected open fun sizeOf(key: K, value: V): Int {
         return 1
     }
 
