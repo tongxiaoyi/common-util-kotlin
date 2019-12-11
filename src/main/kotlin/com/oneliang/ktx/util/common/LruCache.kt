@@ -66,13 +66,12 @@ import java.util.*
  * of [Android's
  * Support Package](http://developer.android.com/sdk/compatibility-library.html) for earlier releases.
  */
-open class LruCache<K, V>
 /**
  * @param maxSize for caches that do not override [.sizeOf], this is
  * the maximum number of entries in the cache. For all other caches,
  * this is the maximum sum of the sizes of the entries in this cache.
  */
-(private var maxSize: Int) {
+abstract class LruCache<K, V>(private var maxSize: Int) {
 
     private val map: LinkedHashMap<K, V>
 
@@ -127,6 +126,7 @@ open class LruCache<K, V>
                 hitCount++
                 return mapValue
             }
+            //map value is null, then need to create
             missCount++
         }
 
@@ -137,26 +137,26 @@ open class LruCache<K, V>
          * the map and release the created value.
          */
 
-        val createdValue = create(key) ?: return null
+        val createdValue = create(key)
 
         synchronized(this) {
             createCount++
-            mapValue = map.put(key, createdValue)
-            val tempMapValue = mapValue
-            if (tempMapValue != null) {
+            val oldMapValue = map.put(key, createdValue)
+            mapValue = oldMapValue
+            if (oldMapValue != null) {//already has key and value in map, maybe wrong logic branch
                 // There was a conflict so undo that last put
-                map.put(key, tempMapValue)
-            } else {
+                map.put(key, oldMapValue)
+            } else {//no key or old value is null in map
                 size += safeSizeOf(key, createdValue)
             }
         }
 
-        if (mapValue != null) {
+        return if (mapValue != null) {//maybe wrong logic branch
             entryRemoved(false, key, createdValue, mapValue)
-            return mapValue
+            mapValue
         } else {
             trimToSize(maxSize)
-            return createdValue
+            createdValue
         }
     }
 
@@ -168,7 +168,7 @@ open class LruCache<K, V>
      *
      * @return the previous value mapped by `key`.
      */
-    fun put(key: K, value: V?): V? {
+    fun put(key: K, value: V): V? {
         if (key == null || value == null) {
             throw NullPointerException("key == null || value == null")
         }
@@ -189,7 +189,7 @@ open class LruCache<K, V>
         }
 
         trimToSize(maxSize)
-        return previous
+        return tempPrevious
     }
 
     /**
@@ -293,9 +293,7 @@ open class LruCache<K, V>
      * thread calls [.put] while another is creating a value for the same
      * key.
      */
-    protected open fun create(key: K): V? {
-        return null
-    }
+    protected abstract fun create(key: K): V
 
     private fun safeSizeOf(key: K, value: V): Int {
         val result = sizeOf(key, value)
