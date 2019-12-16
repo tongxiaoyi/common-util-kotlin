@@ -12,7 +12,7 @@ import javax.script.ScriptEngineManager
 class Template {
     companion object {
         private val logger = LoggerManager.getLogger(Template::class)
-        private var scriptEngine: ScriptEngine? = null
+        private val scriptEngine: ScriptEngine
 
         init {
             val scriptEngineManager = ScriptEngineManager()
@@ -31,8 +31,8 @@ class Template {
                 }
             })
             val templateContent = stringBuilder.toString()
-            val bindings = scriptEngine!!.createBindings()
-            scriptEngine!!.setBindings(bindings, ScriptContext.GLOBAL_SCOPE)
+            val bindings = scriptEngine.createBindings()
+            scriptEngine.setBindings(bindings, ScriptContext.GLOBAL_SCOPE)
             var json: String = Constants.String.BLANK
             val instance = parameter.instance
             if (instance != null) {
@@ -43,22 +43,21 @@ class Template {
                 }
             }
             logger.debug("data object json:$json")
-            scriptEngine!!.eval(JavaScriptFunctionGenerator.getObject(json))
-            scriptEngine!!.eval(JavaScriptFunctionGenerator.template())
-            val invocable = scriptEngine as Invocable?
+            scriptEngine.eval(JavaScriptFunctionGenerator.getObject(json))
+            scriptEngine.eval(JavaScriptFunctionGenerator.template())
+            val invocable = scriptEngine as Invocable
             logger.debug(templateContent)
-            var functionResult = invocable!!.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_TEMPLATE, templateContent)
+            var functionResult = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_TEMPLATE, templateContent)
             logger.debug(JavaScriptFunctionGenerator.getResult(functionResult.toString()))
-            scriptEngine!!.eval(JavaScriptFunctionGenerator.getResult(functionResult.toString()))
+            scriptEngine.eval(JavaScriptFunctionGenerator.getResult(functionResult.toString()))
             functionResult = invocable.invokeFunction(JavaScriptFunctionGenerator.FUNCTION_GET_RESULT)
             val toFile = parameter.toFile
-            var toFileByteArray: ByteArray? = null
-            if (functionResult != null && functionResult.toString().isNotBlank()) {
+            val toFileByteArray = if (functionResult != null && functionResult.toString().isNotBlank()) {
                 logger.debug(functionResult.toString())
-                toFileByteArray = functionResult.toString().toByteArray(Charsets.UTF_8)
+                functionResult.toString().toByteArray(Charsets.UTF_8)
             } else {
                 logger.debug(templateContent)
-                toFileByteArray = stringBuilder.toString().toByteArray(Charsets.UTF_8)
+                stringBuilder.toString().toByteArray(Charsets.UTF_8)
             }
             FileUtil.writeFile(toFile, toFileByteArray)
         } catch (e: Exception) {
@@ -67,48 +66,10 @@ class Template {
     }
 
     class Parameter {
-        /**
-         * @return the templateFile
-         */
-        /**
-         * @param templateFile
-         * the templateFile to set
-         */
         var templateFile: String = Constants.String.BLANK
-        /**
-         * @return the toFile
-         */
-        /**
-         * @param toFile
-         * the toFile to set
-         */
         var toFile: String = Constants.String.BLANK
-        /**
-         * @return the object
-         */
-        /**
-         * @param object
-         * the object to set
-         */
         var instance: Any? = null
-            set(instance) {
-                field = instance
-            }
-        /**
-         * @return the json
-         */
-        /**
-         * @param json
-         * the json to set
-         */
         var json: String = Constants.String.BLANK
-        /**
-         * @return the jsonProcessor
-         */
-        /**
-         * @param jsonProcessor
-         * the jsonProcessor to set
-         */
         var jsonProcessor: JsonUtil.JsonProcessor = JsonUtil.DEFAULT_JSON_PROCESSOR
 
     }
