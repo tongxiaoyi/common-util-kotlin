@@ -33,6 +33,7 @@ object Constants {
         const val CR = '\r'.toByte()
         const val LF = '\n'.toByte()
         const val NULL = "null"
+        const val ZERO = "0"
         val CRLF: ByteArray = ByteArray(2) { index ->
             when (index) {
                 0 -> {
