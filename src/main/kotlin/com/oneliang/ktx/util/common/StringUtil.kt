@@ -1,5 +1,7 @@
 package com.oneliang.ktx.util.common
 
+import com.oneliang.ktx.Constants
+
 fun Long.toFillZeroString(maxLength: Int): String {
     return StringUtil.fillZero(maxLength - this.toString().length) + this.toString()
 }
@@ -10,8 +12,6 @@ fun Int.toFillZeroString(maxLength: Int): String {
 
 object StringUtil {
 
-    private const val ZERO = "0"
-
     /**
      * fill zero
      * @param length
@@ -20,7 +20,7 @@ object StringUtil {
     fun fillZero(length: Int): String {
         val stringBuilder = StringBuilder()
         for (i in 0 until length) {
-            stringBuilder.append(ZERO)
+            stringBuilder.append(Constants.String.ZERO)
         }
         return stringBuilder.toString()
     }

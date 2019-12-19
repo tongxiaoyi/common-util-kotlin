@@ -54,7 +54,6 @@ fun CharSequence.matchPattern(pattern: String): Boolean {
 }
 
 /**
- *
  * Method:only for regex,parse regex group when regex include group
  * @param regex
  * @return List<String>
@@ -109,6 +108,10 @@ fun String.fromUnicode(regex: String = UnicodeRegex.REGEX_ALL): String {
 
 fun String.transformQuotes(): String {
     return this.replace(Constants.Symbol.DOUBLE_QUOTES, Constants.Symbol.SLASH_RIGHT + Constants.Symbol.DOUBLE_QUOTES)
+}
+
+fun String.transformLines(): String {
+    return this.replace(Constants.String.CR_STRING, Constants.Symbol.SLASH_RIGHT + Constants.String.CR_STRING).replace(Constants.String.LF_STRING, Constants.Symbol.SLASH_RIGHT + Constants.String.LF_STRING)
 }
 
 fun String.replaceAllSpace(): String {
