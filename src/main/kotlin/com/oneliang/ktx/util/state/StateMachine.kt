@@ -2,7 +2,7 @@ package com.oneliang.ktx.util.state
 
 import com.oneliang.ktx.util.logging.LoggerManager
 
-class StateMachine<T : State>(var currentState: T, private val stateMap: StateMap<T>) {
+class StateMachine<T : State>(var currentState: T) {
 
     companion object {
         private val logger = LoggerManager.getLogger(StateMachine::class)

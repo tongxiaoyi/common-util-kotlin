@@ -39,6 +39,14 @@ class StateMap<T : State>(val startState: T, initializeStateMap: Map<String, T> 
         }
     }
 
+    fun getState(key: String): T {
+        if (stateMap.containsKey(key)) {
+            return stateMap[key]!!
+        } else {
+            error("state key:%s is not exist:%s".format(key))
+        }
+    }
+
     fun printState() {
         try {
             printState(this.startState)
