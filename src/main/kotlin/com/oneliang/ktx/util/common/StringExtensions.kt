@@ -115,7 +115,7 @@ fun String.transformLines(): String {
 }
 
 fun String.replaceAllSpace(): String {
-    return this.replace(Constants.String.SPACE, Constants.String.BLANK)
+    return this.replace("\\s".toRegex(), Constants.String.BLANK)
 }
 
 fun String.replaceAllLines(): String {
