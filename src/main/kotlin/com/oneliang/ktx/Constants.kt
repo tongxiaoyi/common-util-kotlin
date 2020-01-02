@@ -16,7 +16,7 @@ object Constants {
         const val SECONDS_OF_DAY = SECONDS_OF_HOUR * 24
 
         const val SUFFIX_YEAR = "yy"// suffix year
-        const val MONTH = "MM"// suffix year
+        const val MONTH = "MM"// month
         const val YEAR_MONTH = "yyyy-MM"// year month
         const val YEAR_MONTH_DAY = "yyyy-MM-dd"// year-month-day
         const val YEAR_MONTH_DAY_HOUR_MINUTE_SECOND = "yyyy-MM-dd HH:mm:ss"//always used for database
